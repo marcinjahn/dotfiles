@@ -1,7 +1,12 @@
 # My dotfiles
 
-## Setup
+## Usage
 
 ```sh
-stow --adopt -v .
+# Init on a new system
+just init
+
+# Add new dotfile(s)
+touch .some-dot-file
+just restow
 ```
