@@ -5,7 +5,10 @@ init:
   stow .
 
 restow:
-  stow --adopt -R .
+  stow -R .
+
+remove-all:
+  stow -D .
 
 adopt:
   stow --adopt -v .
