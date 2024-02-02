@@ -4,6 +4,8 @@
 
 ```sh
 # Init on a new system
+git clone git@github.com:marcinjahn/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 just init
 
 # Add new dotfile(s)
