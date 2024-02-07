@@ -1,6 +1,7 @@
 set -gx EDITOR vim
 set -gx VISUAL vim
 set -gx PAGER less
+set -gx LESS -eiRMX
 
 set -gx DOCKER_HOST unix:///run/user/1000/podman/podman.sock
 # set -gx NVM_LAZY_LOAD true
@@ -34,3 +35,5 @@ if status is-interactive
 end
 
 starship init fish | source
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
