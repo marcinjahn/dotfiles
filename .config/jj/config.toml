@@ -1,6 +1,0 @@
-[user]
-name = "Marcin Jahn"
-email = "10273406+marcinjahn@users.noreply.github.com"
-
-[template-aliases]
-'format_short_id(id)' = 'id.shortest()'
