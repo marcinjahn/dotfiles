@@ -1,8 +1,30 @@
+-- return {
+--   "neovim/nvim-lspconfig",
+--   opts = {
+--     servers = {
+--       omnisharp = { enabled = false },
+--       chsarp_ls = {
+--         handlers = {
+--           ["textDocument/definition"] = function(...)
+--             return require("csharpls_extended").handler(...)
+--           end,
+--           ["textDocument/typeDefinition"] = function(...)
+--             return require("csharpls_extended").handler(...)
+--           end,
+--         },
+--       },
+--     },
+--   },
+-- }
+--
+local util = require("lspconfig.util")
+
 return {
   "neovim/nvim-lspconfig",
   opts = {
     servers = {
       omnisharp = {
+        enabled = false,
         handlers = {
           ["textDocument/definition"] = function(...)
             return require("omnisharp_extended").definition_handler(...)
@@ -40,6 +62,9 @@ return {
         enable_roslyn_analyzers = true,
         organize_imports_on_format = true,
         enable_import_completion = true,
+      },
+      angularls = {
+        root_dir = util.root_pattern("angular.json", "project.json"),
       },
     },
   },
