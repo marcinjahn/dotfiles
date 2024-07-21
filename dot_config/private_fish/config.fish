@@ -9,6 +9,7 @@ set -gx DOCKER_HOST unix:///run/user/1000/podman/podman.sock
 set -gx DOTNET_CLI_TELEMETRY_OPTOUT 1
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
 set -gx DOTNET_ROOT $HOME/.dotnet
+set -gx ASDF_GOLANG_MOD_VERSION_ENABLED true
 
 set -U fish_greeting
 # set --universal nvm_default_version v18
