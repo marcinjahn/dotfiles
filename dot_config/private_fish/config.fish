@@ -26,6 +26,7 @@ fish_add_path ~/.local/share/JetBrains/Toolbox/scripts
 fish_add_path ~/.dotnet
 fish_add_path ~/.dotnet/tools
 fish_add_path ~/.cargo/bin
+fish_add_path ~/bin/netcoredbg
 
 source ~/.asdf/asdf.fish
 
