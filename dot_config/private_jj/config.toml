@@ -7,3 +7,8 @@ email = "10273406+marcinjahn@users.noreply.github.com"
 
 [ui]
 default-command = "log"
+
+[merge-tools.diffconflicts]
+program = "nvim"
+merge-args = ["-c", "JJDiffConflicts!", "$output", "$base", "$left", "$right"]
+merge-tool-edits-conflict-markers = true
