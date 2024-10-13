@@ -1,5 +1,10 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
+  vscode = false,
+  keys = {
+
+    { "<leader>e", false },
+  },
   opts = {
     window = { position = "right" },
   },

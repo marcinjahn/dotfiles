@@ -1,5 +1,6 @@
 return {
   "nvim-neotest/neotest",
+  vscode = false,
   dependencies = {
     "nvim-neotest/neotest-jest",
     "Issafalcon/neotest-dotnet",

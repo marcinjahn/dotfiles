@@ -1,6 +1,7 @@
 return {
   {
     "folke/edgy.nvim",
+    vscode = false,
     opts = function(_, opts)
       opts.keys = {
         -- increase width

@@ -1,6 +1,7 @@
 return {
   {
     "hrsh7th/nvim-cmp",
+    vscode = false,
     opts = function(_, opts)
       -- LSP borders (causes some errors)
       -- local float = { focusable = true, style = "minimal", border = "rounded" }

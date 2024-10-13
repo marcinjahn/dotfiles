@@ -21,6 +21,7 @@ local util = require("lspconfig.util")
 
 return {
   "neovim/nvim-lspconfig",
+  vscode = false,
   opts = {
     servers = {
       omnisharp = {
