@@ -1,11 +1,30 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
 keybinds {
     normal {
+        // Intercept `Enter`.
+        bind "Enter" {
+            // Passthru `Enter`.
+            WriteChars "\u{000D}";
+            // Invoke autolock to immediately assess proper lock state.
+            // (This provides a snappier experience compared to
+            // solely relying on `reaction_seconds` to elapse.)
+            MessagePlugin "autolock" {};
+        }
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
+        
+        bind "Ctrl h" {
+            MoveFocusOrTab "Left";
+        }
     }
     locked {
         bind "Ctrl g" { SwitchToMode "Normal"; }
+        bind "Alt z" {
+            // Disable the autolock plugin.
+            MessagePlugin "autolock" {payload "disable";};
+            // Unlock Zellij.
+            SwitchToMode "Normal";
+        }
     }
     resize {
         bind "Ctrl n" { SwitchToMode "Normal"; }
@@ -146,6 +165,26 @@ keybinds {
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
+
+        bind "Alt z" {
+            // Disable the autolock plugin.
+            MessagePlugin "autolock" {payload "disable";};
+            // Lock Zellij.
+            SwitchToMode "Locked";
+        }
+
+        bind "Ctrl h" {
+            MoveFocusOrTab "Left";
+        }
+        bind "Ctrl l" {
+            MoveFocusOrTab "Right";
+        }
+        bind "Ctrl j" {
+            MoveFocus "Down";
+        }
+        bind "Ctrl k" {
+            MoveFocus "Up";
+        }
     }
     shared_except "normal" "locked" {
         bind "Enter" "Esc" { SwitchToMode "Normal"; }
@@ -171,6 +210,12 @@ keybinds {
     shared_except "tmux" "locked" {
         bind "Ctrl b" { SwitchToMode "Tmux"; }
     }
+    shared {
+        bind "Alt Shift z" {
+            // Enable the autolock plugin.
+            MessagePlugin "autolock" {payload "enable";};
+        }
+    }
 }
 
 plugins {
@@ -178,6 +223,22 @@ plugins {
     status-bar { path "status-bar"; }
     strider { path "strider"; }
     compact-bar { path "compact-bar"; }
+    autolock location="https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm" {
+        // Enabled at start?
+        is_enabled true
+        // Lock when any open these programs open.
+        triggers "nvim|vim|v|nv|git|fzf|zoxide|atuin"
+        // Reaction to input occurs after this many seconds. (default=0.3)
+        // (An existing scheduled reaction prevents additional reactions.)
+        reaction_seconds "0.3"
+        // watch_interval "1.0"  // When monitoring, check every X seconds.
+        // Print to Zellij log? (default=false)
+        print_to_log true
+    }
+}
+// Load this "headless" plugin on start.
+load_plugins {
+    autolock
 }
 
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP

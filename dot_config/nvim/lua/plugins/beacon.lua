@@ -1,4 +1,4 @@
 return {
-  "danilamihailov/beacon.nvim",
-  vscode = false,
+  -- "danilamihailov/beacon.nvim",
+  -- vscode = false,
 }

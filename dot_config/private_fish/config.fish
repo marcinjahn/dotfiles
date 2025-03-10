@@ -10,6 +10,7 @@ set -gx DOTNET_CLI_TELEMETRY_OPTOUT 1
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
 set -gx DOTNET_ROOT $HOME/.dotnet
 set -gx ASDF_GOLANG_MOD_VERSION_ENABLED true
+set -gx MONO_GAC_PREFI /home/linuxbrew/.linuxbrew
 
 set -U fish_greeting
 # set --universal nvm_default_version v18
@@ -33,11 +34,9 @@ source ~/.asdf/asdf.fish
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-jj util completion fish | source
-
-
 if status is-interactive
-
+    alias v="nvim"
 end
 
 starship init fish | source
+COMPLETE=fish jj | source

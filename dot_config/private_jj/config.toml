@@ -12,3 +12,6 @@ default-command = "log"
 program = "nvim"
 merge-args = ["-c", "JJDiffConflicts!", "$output", "$base", "$left", "$right"]
 merge-tool-edits-conflict-markers = true
+
+[git]
+push-new-bookmarks = true

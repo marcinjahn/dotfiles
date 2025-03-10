@@ -1,6 +1,6 @@
 return {
   {
-    "seblj/roslyn.nvim",
+    "seblyng/roslyn.nvim",
     vscode = false,
     -- commit = "e284f0e6c34b01cd1db9fdb71c75ae85d732a43b",
     ft = "cs",

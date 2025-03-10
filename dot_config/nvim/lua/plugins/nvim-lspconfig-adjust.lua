@@ -19,10 +19,18 @@
 --
 local util = require("lspconfig.util")
 
+-- install rust-analyzer with: rustup component add rust-analyzer
+
 return {
   "neovim/nvim-lspconfig",
   vscode = false,
   opts = {
+    setup = {
+      -- without it, rust-analyzer will start twice for some reason
+      rust_analyzer = function()
+        return true
+      end,
+    },
     servers = {
       omnisharp = {
         enabled = false,

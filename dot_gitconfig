@@ -4,6 +4,7 @@
 [core]
 	editor = vim
 	pager = delta
+	excludesfile = /home/mnj/.gitignore
 [init]
 	defaultBranch = main
 [rebase]
