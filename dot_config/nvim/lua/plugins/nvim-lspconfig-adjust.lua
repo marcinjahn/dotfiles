@@ -25,6 +25,10 @@ return {
   "neovim/nvim-lspconfig",
   vscode = false,
   opts = {
+    diagnostics = {
+      virtual_text = false,
+      virtual_lines = true,
+    },
     setup = {
       -- without it, rust-analyzer will start twice for some reason
       rust_analyzer = function()

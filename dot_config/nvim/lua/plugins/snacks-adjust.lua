@@ -1,6 +1,14 @@
 return {
   "folke/snacks.nvim",
   opts = {
+    picker = {
+      formatters = {
+        file = {
+          truncate = 80,
+          filename_first = true,
+        },
+      },
+    },
     dashboard = {
       preset = {
 
