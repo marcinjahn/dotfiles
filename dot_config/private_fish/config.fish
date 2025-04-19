@@ -38,5 +38,5 @@ if status is-interactive
     alias v="nvim"
 end
 
-starship init fish | source
+# starship init fish | source
 COMPLETE=fish jj | source
