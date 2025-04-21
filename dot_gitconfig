@@ -2,7 +2,7 @@
 	name = Marcin Jahn
 	email = 10273406+marcinjahn@users.noreply.github.com
 [core]
-	editor = vim
+	editor = nvim
 	pager = delta
 	excludesfile = /home/mnj/.gitignore
 [init]
@@ -21,19 +21,19 @@
 	conflictstyle = diff3
 
 [diff]
-        colorMoved = default
-		tool = difftastic
-		external = difft
+  colorMoved = default
+  tool = difftastic
+  external = difft
 
 [difftool]
-        prompt = false
+  prompt = false
 
 [difftool "difftastic"]
-        cmd = difft "$LOCAL" "$REMOTE"
+  cmd = difft "$LOCAL" "$REMOTE"
 
 [pager]
-        difftool = true
+  difftool = true
 
 [alias]
-        dft = difftool
-		dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
+  dft = difftool
+  dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
