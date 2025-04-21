@@ -15,3 +15,13 @@ merge-tool-edits-conflict-markers = true
 
 [git]
 push-new-bookmarks = true
+private-commits = '''description(glob:'private:*')'''
+
+[templates]
+backout_description = '''
+concat(
+  'Revert "' ++ description.first_line() ++ '"' ++ "\n",
+  "\n",
+  "This reverts commit " ++ commit_id ++ ".\n",
+)
+'''
