@@ -97,6 +97,8 @@ layout {
     // Set gaps around windows in logical pixels.
     gaps 12 
 
+    empty-workspace-above-first
+
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
     //   or right edge of the screen.
@@ -222,6 +224,7 @@ layout {
 // spawn-at-startup "alacritty" "-e" "fish"
 
 spawn-at-startup "xwayland-satellite" ":12"
+spawn-at-startup "clipse" "-listen"
 
 environment {
     DISPLAY ":12"
@@ -309,8 +312,41 @@ window-rule {
     match app-id="chrome"
     match app-id="chromium"
     match app-id="edge"
+
     open-maximized true
 }
+
+window-rule {
+  match app-id="Slack"
+
+  open-maximized true
+  open-on-output "eDP-1"
+}
+
+window-rule {
+  match app-id="org.mozilla.Thunderbird"
+
+  open-maximized true
+  open-on-output "eDP-1"
+}
+
+window-rule {
+  match app-id="Microsoft-edge" title="Gmail"
+
+  open-maximized true
+  open-on-output "eDP-1"
+}
+
+window-rule {
+  match app-id="pavucontrol"
+  default-column-width { proportion 0.25; }
+}
+
+window-rule {
+  match title="clipse"
+  open-floating true
+}
+
 
 // Indicate screencasted windows with red colors.
 window-rule {
@@ -362,8 +398,11 @@ binds {
     // shows a list of important hotkeys.
     Mod+Shift+Slash { show-hotkey-overlay; }
 
+    Alt+Tab { spawn "sh" "-c" "~/.config/niri/scripts/window-switcher.sh"; }
+
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+Return repeat=false { spawn "alacritty"; }
+    // Mod+Return repeat=false { spawn "alacritty"; }
+    Mod+Return repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/open-alacritty.sh"; }
     Mod+Space repeat=false { spawn "fuzzel"; }
     Super+Alt+L repeat=false { spawn "swaylock"; }
 
@@ -373,31 +412,31 @@ binds {
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.015+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.015-"; }
     XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 
     Mod+Q { close-window; }
-    Mod+W { toggle-column-tabbed-display; }
+    Mod+T { toggle-column-tabbed-display; }
 
-    Mod+Left  { focus-column-left; }
+    Mod+Left  { focus-column-or-monitor-left; }
     Mod+Down  { focus-window-down; }
     Mod+Up    { focus-window-up; }
-    Mod+Right { focus-column-right; }
-    Mod+H     { focus-column-left; }
+    Mod+Right { focus-column-or-monitor-right; }
+    Mod+H  { focus-column-or-monitor-left; }
     Mod+J     { focus-window-or-workspace-down; }
     Mod+K     { focus-window-or-workspace-up; }
-    Mod+L     { focus-column-right; }
+    Mod+L { focus-column-or-monitor-right; }
 
-    Mod+Ctrl+Left  { move-column-left; }
+    Mod+Ctrl+Left  { move-column-left-or-to-monitor-left; }
     Mod+Ctrl+Down  { move-window-down-or-to-workspace-down; }
     Mod+Ctrl+Up    { move-window-up-or-to-workspace-up; }
     Mod+Ctrl+Right { move-column-right; }
-    Mod+Ctrl+H     { move-column-left; }
+    Mod+Ctrl+H  { move-column-left-or-to-monitor-left; }
     Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
     Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
-    Mod+Ctrl+L     { move-column-right; }
+    Mod+Ctrl+L     { move-column-right-or-to-monitor-right; }
 
     Mod+Home { focus-column-first; }
     Mod+End  { focus-column-last; }
@@ -527,6 +566,8 @@ binds {
     Mod+Shift+F { fullscreen-window; }
     // Mod+Ctrl+Shift+F { toggle-windowed-fullscreen; } // next release
     Mod+C { center-column; }
+
+    Mod+V { spawn "alacritty" "--title" "clipse" "--command" "clipse"; }
 
     // Finer width adjustments.
     // This command can also:
