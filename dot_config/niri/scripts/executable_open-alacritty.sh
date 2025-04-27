@@ -28,7 +28,7 @@ if [ "$app_id" = "Alacritty" ]; then
   # It is Alacritty. Try to find its PID.
   # Uses sed: Captures the sequence of digits after "PID: "
   pid=$(echo "$output" | sed -n 's/.*PID: \([0-9]*\).*/\1/p')
-  child_pid=$(pgrep -P $pid)
+  child_pid=$(pgrep -P "$pid")
 
   if cwd=$(readlink "/proc/$child_pid/cwd" 2>/dev/null); then
     # Check if readlink actually returned a path
