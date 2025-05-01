@@ -15,6 +15,8 @@ input {
             // For example:
             // layout "us,ru"
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
+            //
+            layout "pl"
         }
     }
 
@@ -44,7 +46,7 @@ input {
     // warp-mouse-to-focus
 
     // Focus windows and outputs automatically when moving the mouse into them.
-    // focus-follows-mouse
+    focus-follows-mouse
 }
 
 // You can configure outputs by their name, which you can find
@@ -292,7 +294,7 @@ layer-rule {
 layer-rule {
     match namespace="^launcher$"
 
-    opacity 0.95
+    // opacity 0.95
 
     shadow {
         on
@@ -344,6 +346,16 @@ window-rule {
 
 window-rule {
   match title="clipse"
+  open-floating true
+}
+
+window-rule {
+  match app-id="jetbrains-rider"
+  open-maximized true
+}
+
+window-rule {
+  match title="Yubico Authenticator"
   open-floating true
 }
 

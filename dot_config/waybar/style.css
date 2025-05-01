@@ -1,14 +1,21 @@
 * {
+  font-family: "Adwaita Sans", "Font Awesome 6 Free";
+  font-size: 14px;
+  font-feature-settings: "tnum";
   border: none;
   border-radius: 0;
-  font-family: "Adwaita Mono";
-  font-size: 13px;
   min-height: 0;
 }
 
 window#waybar {
+  color: #ffffff;
   background: transparent;
-  color: white;
+  background-color: rgba(30, 30, 46, 44);
+  border-left: 1px solid #444444;
+}
+
+window#waybar > box {
+  padding: 10px 0px;
 }
 
 /*
@@ -16,18 +23,39 @@ window#waybar {
     padding: 0 5px;
 }
 */
-
 #workspaces button {
-  padding: 0 5px;
-  background: transparent;
-  color: white;
-  border-top: 2px solid transparent;
+  padding: 10 0;
+  color: #f0f0ff;
+  /* border-left: 1px solid #6c7086; */
 }
 
-#workspaces button.focused {
-  color: #c9545d;
-  border-top: 2px solid #c9545d;
+#workspaces button:hover {
+  background-color: rgba(49, 50, 68, 1);
 }
+
+#workspaces button.active {
+  background-color: rgba(88, 91, 112, 1);
+}
+
+#workspaces button.active:hover {
+  background-color: rgba(108, 112, 134, 1);
+}
+
+#workspaces button.urgent {
+  background-color: #eb4d4b;
+}
+
+/* #workspaces button { */
+/*   padding: 0 5px; */
+/*   background: transparent; */
+/*   color: white; */
+/*   border-top: 2px solid transparent; */
+/* } */
+
+/* #workspaces button.focused { */
+/*   color: #c9545d; */
+/*   border-top: 2px solid #c9545d; */
+/* } */
 
 #mode {
   background: #64727d;
@@ -43,26 +71,16 @@ window#waybar {
 #custom-spotify,
 #tray,
 #mode {
-  padding: 0 3px;
-  margin: 0 2px;
+  /* padding: 0 3px; */
+  /* margin: 0 2px; */
 }
 
 #custom-power {
-  font-family: "JetBrainsMono Nerd Fonts";
+  /* font-family: "JetBrainsMono Nerd Fonts"; */
 }
 
 #clock {
   font-weight: bold;
-}
-
-#battery {
-}
-
-#battery icon {
-  color: red;
-}
-
-#battery.charging {
 }
 
 @keyframes blink {
@@ -81,24 +99,65 @@ window#waybar {
   animation-direction: alternate;
 }
 
-#cpu {
-}
-
-#memory {
-}
-
-#network {
-}
-
 #network.disconnected {
-  background: #f53c3c;
+  background: #eb4d4b;
 }
 
-#pulseaudio {
+#tray > .passive {
+  -gtk-icon-effect: dim;
 }
 
-#pulseaudio.muted {
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: #eb4d4b;
 }
 
-#tray {
+#privacy {
+  padding-left: 6px;
+}
+
+#privacy .audio-in {
+  color: #f5cb42;
+}
+
+#privacy .screenshare {
+  color: #eb4d4b;
+}
+
+#mpris.stopped {
+  color: #64727d;
+}
+
+#mpris.paused {
+  color: #64727d;
+}
+
+#pulseaudio-slider slider {
+  min-height: 0px;
+  min-width: 10px;
+  opacity: 1;
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+}
+#pulseaudio-slider trough {
+  min-height: 50px;
+  min-width: 10px;
+  border-radius: 5px;
+  background-color: black;
+}
+#pulseaudio-slider highlight {
+  min-width: 10px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: white;
+}
+
+#group-power #custom-reboot {
+  margin-bottom: 10px;
+}
+
+#group-power #custom-logout {
+  margin-bottom: 10px;
 }
