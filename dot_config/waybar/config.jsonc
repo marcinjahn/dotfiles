@@ -8,6 +8,7 @@
   "modules-right": [
     "network",
     "pulseaudio/slider",
+    "custom/dnd",
     "battery",
     "tray",
     "group/group-power",
@@ -128,5 +129,22 @@
   "tray": {
     // "icon-size": 21,
     "spacing": 15,
+  },
+  "custom/dnd": {
+    // Use "format": "{}" to display the 'text' field from the JSON output
+    "format": "{}",
+    // Path to the status monitoring script
+    // Make sure to replace /path/to/your/scripts with the actual path
+    "exec": "~/.config/waybar/scripts/check-dnd.sh",
+    "interval": 2,
+    // Path to the toggle script
+    // Make sure to replace /path/to/your/scripts with the actual path
+    "on-click": "makoctl mode -t do-not-disturb",
+    // Specify that the exec script returns JSON
+    "return-type": "json",
+    // Enable tooltip display using the 'tooltip' field from the JSON
+    "tooltip": true,
+    // Optional: Set signal to reload module if needed, though 'makoctl wait' should handle updates
+    // "signal": 8
   },
 }
