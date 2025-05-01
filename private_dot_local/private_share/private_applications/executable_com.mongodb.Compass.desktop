@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=MongoDB Compass
+Comment=The MongoDB GUI
+GenericName=MongoDB Compass
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=run.sh --file-forwarding com.mongodb.Compass --password-store=gnome-libsecret --ignore-additional-command-line-flags @@u %U @@
+Icon=com.mongodb.Compass
+Type=Application
+StartupNotify=true
+Categories=GNOME;GTK;Utility;Database;
+MimeType=x-scheme-handler/mongodb;x-scheme-handler/mongodb+srv;
+X-Flatpak=com.mongodb.Compass
