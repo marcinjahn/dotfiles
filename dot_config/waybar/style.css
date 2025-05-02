@@ -145,13 +145,19 @@ window#waybar > box {
   min-height: 50px;
   min-width: 8px;
   border-radius: 5px;
-  background-color: black;
+  background-color: #111111;
+  border-top: 1px solid #444444;
+  border-left: 1px solid #444444;
+  border-right: 1px solid #444444;
 }
 #pulseaudio-slider highlight {
   min-width: 10px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   background-color: white;
+  border-bottom: 1px solid #444444;
+  border-left: 1px solid #444444;
+  border-right: 1px solid #444444;
 }
 
 #group-power #custom-reboot {
