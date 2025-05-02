@@ -1,7 +1,7 @@
 {
   "layer": "top",
   "fixed-center": true,
-  "position": "right",
+  "position": "left",
   "spacing": 15,
   "modules-left": ["clock", "privacy#screen", "privacy#mic", "mpris"],
   "modules-center": ["niri/workspaces"],
