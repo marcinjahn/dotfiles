@@ -10,6 +10,9 @@ vim.api.nvim_create_autocmd("VimLeave", {
   command = "silent !zellij action switch-mode normal",
 })
 
+vim.fn.sign_define("DapBreakpoint", { text = "🟥", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "", numhl = "" })
+
 -- vim.api.nvim_add_user_command("CopyPath", "call setreg('+', expand('%'))", {})
 --
 -- vim.diagnostic.config({
