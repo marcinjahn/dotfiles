@@ -621,9 +621,10 @@ binds {
 
     Print { screenshot; }
     Super+Shift+S { screenshot; } // logitech screenshot button
-    Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window; }
+    Super+Shift+Ctrl+S { spawn "sh" "-c" "~/.config/niri/scripts/record-screen.sh"; }
     Alt+Super+Shift+S { screenshot-window; } // logitech screenshot button
+    // Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
     Mod+Shift+E { quit; }

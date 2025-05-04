@@ -175,3 +175,7 @@ window#waybar > box {
 #custom-dnd.enabled {
   color: #64727d;
 }
+
+#custom-recording.recording {
+  color: #eb4d4b;
+}

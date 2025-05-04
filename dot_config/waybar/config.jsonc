@@ -3,7 +3,13 @@
   "fixed-center": true,
   "position": "left",
   "spacing": 15,
-  "modules-left": ["clock", "privacy#screen", "privacy#mic", "mpris"],
+  "modules-left": [
+    "clock",
+    "privacy#screen",
+    "privacy#mic",
+    "custom/recording",
+    "mpris",
+  ],
   "modules-center": ["niri/workspaces"],
   "modules-right": [
     "network",
@@ -144,7 +150,12 @@
     "return-type": "json",
     // Enable tooltip display using the 'tooltip' field from the JSON
     "tooltip": true,
-    // Optional: Set signal to reload module if needed, though 'makoctl wait' should handle updates
-    // "signal": 8
+  },
+  "custom/recording": {
+    "format": "{}",
+    "return-type": "json",
+    "signal": 8,
+    "exec": "~/.config/waybar/scripts/check_screen_recording.sh",
+    "tooltip": false,
   },
 }
