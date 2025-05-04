@@ -310,6 +310,12 @@ window-rule {
 }
 
 window-rule {
+  match app-id="org.gnome.NautilusPreviewer"
+
+  open-floating true
+}
+
+window-rule {
     match app-id="firefox"
     match app-id="chrome"
     match app-id="chromium"
@@ -317,6 +323,7 @@ window-rule {
 
     exclude title="Developer Tools"
 
+    open-maximized true
 }
 
 window-rule {
@@ -433,6 +440,9 @@ binds {
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
     XF86AudioPlay        allow-when-locked=true { spawn "playerctl" "play-pause"; }
     XF86AudioNext        allow-when-locked=true { spawn "playerctl" "next"; }
+    XF86MonBrightnessUp  allow-when-locked=true cooldown-ms=50 { spawn "sh" "-c" "~/.config/niri/scripts/brightness.sh increase 5"; }
+    XF86MonBrightnessDown  allow-when-locked=true cooldown-ms=50 { spawn "sh" "-c" "~/.config/niri/scripts/brightness.sh decrease 5"; }
+    // XF86MonBrightnessUp  allow-when-locked=true { spawn "notify-send" "test";}
 
     Mod+Q { close-window; }
     Mod+T { toggle-column-tabbed-display; }
