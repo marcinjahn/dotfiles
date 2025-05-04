@@ -440,8 +440,8 @@ binds {
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
     XF86AudioPlay        allow-when-locked=true { spawn "playerctl" "play-pause"; }
     XF86AudioNext        allow-when-locked=true { spawn "playerctl" "next"; }
-    XF86MonBrightnessUp  allow-when-locked=true cooldown-ms=50 { spawn "sh" "-c" "~/.config/niri/scripts/brightness.sh increase 5"; }
-    XF86MonBrightnessDown  allow-when-locked=true cooldown-ms=50 { spawn "sh" "-c" "~/.config/niri/scripts/brightness.sh decrease 5"; }
+    XF86MonBrightnessUp  allow-when-locked=true cooldown-ms=50 { spawn "brightnessctl" "s" "+5%"; }
+    XF86MonBrightnessDown  allow-when-locked=true cooldown-ms=50 { spawn "brightnessctl" "s" "5%-"; }
     // XF86MonBrightnessUp  allow-when-locked=true { spawn "notify-send" "test";}
 
     Mod+Q { close-window; }
