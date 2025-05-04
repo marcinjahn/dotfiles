@@ -156,6 +156,7 @@
     "return-type": "json",
     "signal": 8,
     "exec": "~/.config/waybar/scripts/check_screen_recording.sh",
+    "on-click": "~/.config/niri/scripts/record-screen.sh",
     "tooltip": false,
   },
 }
