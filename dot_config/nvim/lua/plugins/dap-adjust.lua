@@ -1,7 +1,37 @@
+local function send_payload(client, payload)
+  local rpc = require("dap.rpc")
+  local msg = rpc.msg_with_content_length(vim.json.encode(payload))
+  client.write(msg)
+end
+
+local SIGNJS = "/home/mnj/.config/nvim/vsdbg/sign.js"
+
+function RunHandshake(self, request_payload)
+  local signResult = io.popen("node " .. SIGNJS .. " " .. request_payload.arguments.value)
+  if signResult == nil then
+    local utils = require("dap.utils")
+    utils.notify("error while signing handshake", vim.log.levels.ERROR)
+    return
+  end
+  local signature = signResult:read("*a")
+  signature = string.gsub(signature, "\n", "")
+  local response = {
+    type = "response",
+    seq = 0,
+    command = "handshake",
+    request_seq = request_payload.seq,
+    success = true,
+    body = {
+      signature = signature,
+    },
+  }
+  send_payload(self.client, response)
+end
+
 local function rebuild_project(co, path)
   local spinner = require("easy-dotnet.ui-modules.spinner").new()
   spinner:start_spinner("Building")
-  vim.fn.jobstart(string.format("dotnet build %s", path), {
+  vim.fn.jobstart(string.format("dotnet build -c Debug %s", path), {
     on_exit = function(_, return_code)
       if return_code == 0 then
         spinner:stop_spinner("Built successfully")
@@ -31,21 +61,21 @@ return {
     config = function()
       local dap = require("dap")
       local dotnet = require("easy-dotnet")
-      local dapui = require("dapui")
+      -- local dapui = require("dapui")
       dap.set_log_level("TRACE")
 
-      dap.listeners.before.attach.dapui_config = function()
-        dapui.open()
-      end
-      dap.listeners.before.launch.dapui_config = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated.dapui_config = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited.dapui_config = function()
-        dapui.close()
-      end
+      -- dap.listeners.before.attach.dapui_config = function()
+      --   dapui.open()
+      -- end
+      -- dap.listeners.before.launch.dapui_config = function()
+      --   dapui.open()
+      -- end
+      -- dap.listeners.before.event_terminated.dapui_config = function()
+      --   dapui.close()
+      -- end
+      -- dap.listeners.before.event_exited.dapui_config = function()
+      --   dapui.close()
+      -- end
 
       -- vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, {})
 
@@ -64,44 +94,95 @@ return {
         debug_dll = dll
         return dll
       end
+      dap.adapters.coreclr = {
+        id = "coreclr",
+        type = "executable",
+        command = "/home/mnj/.vscode/extensions/ms-dotnettools.csharp-2.72.34-linux-x64/.debugger/vsdbg-ui",
+        args = {
+          "--interpreter=vscode",
+          -- "--engineLogging",
+          -- "--consoleLogging",
+        },
+        options = {
+          externalTerminal = true,
+        },
+        runInTerminal = true,
+        reverse_request_handlers = {
+          handshake = RunHandshake,
+        },
+      }
 
-      for _, value in ipairs({ "cs", "fsharp" }) do
-        dap.configurations[value] = {
-          {
-            type = "coreclr",
-            name = "Program",
-            request = "launch",
-            env = function()
-              local dll = ensure_dll()
-              local vars = dotnet.get_environment_variables(dll.project_name, dll.absolute_project_path)
-              return vars or nil
-            end,
-            program = function()
-              local dll = ensure_dll()
-              local co = coroutine.running()
-              rebuild_project(co, dll.project_path)
-              if not file_exists(dll.target_path) then
-                error("Project has not been built, path: " .. dll.target_path)
-              end
-              return dll.target_path
-            end,
-            cwd = function()
-              local dll = ensure_dll()
-              return dll.absolute_project_path
-            end,
-          },
-        }
+      dap.configurations.cs = {
+        {
+          type = "coreclr",
+          name = "Launch",
+          request = "launch",
+          program = function()
+            local dll = ensure_dll()
+            local co = coroutine.running()
+            rebuild_project(co, dll.project_path)
+            if not file_exists(dll.target_path) then
+              error("Project has not been built, path: " .. dll.target_path)
+            end
+            return dll.target_path
+          end,
+          args = {},
+          env = function()
+            local dll = ensure_dll()
+            local vars = dotnet.get_environment_variables(dll.project_name, dll.absolute_project_path)
+            return vars or nil
+          end,
+          cwd = function()
+            local dll = ensure_dll()
+            return dll.absolute_project_path
+          end,
+          clientID = "vscode",
+          clientName = "Visual Studio Code",
+          externalTerminal = true,
+          columnsStartAt1 = true,
+          linesStartAt1 = true,
+          locale = "en",
+          pathFormat = "path",
+          externalConsole = true,
+        },
+      }
 
-        dap.listeners.before["event_terminated"]["easy-dotnet"] = function()
-          debug_dll = nil
-        end
-
-        dap.adapters.coreclr = {
-          type = "executable",
-          command = "netcoredbg",
-          args = { "--interpreter=vscode" },
-        }
+      -- could also be the same for "fsharp"
+      -- dap.configurations.cs = {
+      --   {
+      --     type = "coreclr",
+      --     name = "Program",
+      --     request = "launch",
+      --     env = function()
+      --       local dll = ensure_dll()
+      --       local vars = dotnet.get_environment_variables(dll.project_name, dll.absolute_project_path)
+      --       return vars or nil
+      --     end,
+      --     program = function()
+      --       local dll = ensure_dll()
+      --       local co = coroutine.running()
+      --       rebuild_project(co, dll.project_path)
+      --       if not file_exists(dll.target_path) then
+      --         error("Project has not been built, path: " .. dll.target_path)
+      --       end
+      --       return dll.target_path
+      --     end,
+      --     cwd = function()
+      --       local dll = ensure_dll()
+      --       return dll.absolute_project_path
+      --     end,
+      --   },
+      -- }
+      --
+      dap.listeners.before["event_terminated"]["easy-dotnet"] = function()
+        debug_dll = nil
       end
+
+      -- dap.adapters.coreclr = {
+      --   type = "executable",
+      --   command = "netcoredbg",
+      --   args = { "--interpreter=vscode" },
+      -- }
     end,
     keys = {
       {
@@ -117,6 +198,13 @@ return {
           require("dap").step_over()
         end,
         desc = "Step Over",
+      },
+      {
+        "<leader>dC",
+        function()
+          require("dap").run_to_cursor()
+        end,
+        desc = "Run to Cursor",
       },
     },
     -- dependencies = {
