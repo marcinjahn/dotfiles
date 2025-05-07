@@ -428,6 +428,8 @@ binds {
     Mod+Space repeat=false { spawn "fuzzel"; }
     Super+Alt+L repeat=false { spawn "swaylock"; }
 
+    Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
+
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
     // Mod+T { spawn "bash" "-c" "notify-send hello && exec alacritty"; }
