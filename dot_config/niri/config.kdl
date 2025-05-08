@@ -86,7 +86,7 @@ output "eDP-1" {
     position x=0 y=0
 }
 
-output "DP-3" {
+output "LG Electronics LG ULTRAGEAR 203NTQD77460" {
   mode "2560x1440@143.933"
   position x=1280 y=-700
   // focus-at-startup // next release
