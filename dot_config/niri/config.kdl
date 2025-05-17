@@ -88,7 +88,7 @@ output "eDP-1" {
 
 output "LG Electronics LG ULTRAGEAR 203NTQD77460" {
   mode "2560x1440@143.933"
-  position x=1280 y=-700
+  // position x=1280 y=-700
   // focus-at-startup // next release
 }
 
@@ -225,6 +225,8 @@ layout {
 // See the binds section below for more spawn examples.
 // spawn-at-startup "alacritty" "-e" "fish"
 
+spawn-at-startup "ydotoold"
+spawn-at-startup "fuzzel"
 spawn-at-startup "xwayland-satellite" ":12"
 spawn-at-startup "clipse" "-listen"
 
@@ -349,7 +351,8 @@ window-rule {
 
 window-rule {
   match app-id="pavucontrol"
-  default-column-width { proportion 0.25; }
+  match app-id="com.saivert.pwvucontrol"
+  default-column-width { proportion 0.22; }
 }
 
 window-rule {
@@ -426,9 +429,16 @@ binds {
     // Mod+Return repeat=false { spawn "alacritty"; }
     Mod+Return repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/open-alacritty.sh"; }
     Mod+Space repeat=false { spawn "fuzzel"; }
-    Super+Alt+L repeat=false { spawn "swaylock"; }
+    Super+Shift+L repeat=false { spawn "swaylock"; }
 
     Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
+
+    Alt+h cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "-25" "-y" "0"; }
+    Alt+l cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "+25" "-y" "0"; }
+    Alt+j cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "+25"; }
+    Alt+k cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "-25"; }
+    Alt+u repeat=false { spawn "ydotool" "click" "0xC0"; }
+    Alt+i repeat=false { spawn "ydotool" "click" "0xC1"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -649,3 +659,7 @@ clipboard {
     disable-primary
 }
 
+// next release, might help with firefox focus when clicking links
+// debug {
+//     honor-xdg-activation-with-invalid-serial
+// }
