@@ -433,12 +433,12 @@ binds {
 
     Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
 
-    Alt+h cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "-25" "-y" "0"; }
-    Alt+l cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "+25" "-y" "0"; }
-    Alt+j cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "+25"; }
-    Alt+k cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "-25"; }
-    Alt+u repeat=false { spawn "ydotool" "click" "0xC0"; }
-    Alt+i repeat=false { spawn "ydotool" "click" "0xC1"; }
+    Super+Alt+h cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "-25" "-y" "0"; }
+    Super+Alt+l cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "+25" "-y" "0"; }
+    Super+Alt+j cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "+25"; }
+    Super+Alt+k cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "-25"; }
+    Super+Alt+u repeat=false { spawn "ydotool" "click" "0xC0"; }
+    Super+Alt+i repeat=false { spawn "ydotool" "click" "0xC1"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
