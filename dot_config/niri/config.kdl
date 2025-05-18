@@ -55,7 +55,15 @@ input {
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
 // Remember to uncomment the node by removing "/-"!
+output "LG Electronics LG ULTRAGEAR 203NTQD77460" {
+  mode "2560x1440@143.933"
+  // position x=1280 y=-700
+  focus-at-startup
+}
+
 output "eDP-1" {
+
+  focus-at-startup
     // Uncomment this line to disable this output.
     // off
 
@@ -86,11 +94,6 @@ output "eDP-1" {
     position x=0 y=0
 }
 
-output "LG Electronics LG ULTRAGEAR 203NTQD77460" {
-  mode "2560x1440@143.933"
-  // position x=1280 y=-700
-  // focus-at-startup // next release
-}
 
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:0
@@ -99,7 +102,7 @@ layout {
     // Set gaps around windows in logical pixels.
     gaps 12 
 
-    empty-workspace-above-first
+    // empty-workspace-above-first
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -145,7 +148,7 @@ layout {
         // off
 
         // How many logical pixels the ring extends out from the windows.
-        width 3
+        width 4
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -186,6 +189,7 @@ layout {
         width 4
         active-color "#ffc87f"
         inactive-color "#505050"
+        urgent-color "#9b0000"
 
         // active-gradient from="#ffbb66" to="#ffc880" angle=45 relative-to="workspace-view"
         // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
@@ -206,7 +210,7 @@ layout {
     tab-indicator {
         // hide-when-single-tab
         place-within-column
-        width 6
+        width 8
         position "left"
         gap 10
         // corner-radius: 8 //next release?
@@ -257,9 +261,9 @@ animations {
 
     // Slow down all animations by this factor. Values below 1 speed them up instead.
     // slowdown 3.0
-    workspace-switch {
-        spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
-    }
+    // workspace-switch {
+    //     spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+    // }
 }
 
 // Window rules let you adjust behavior for individual windows.
@@ -304,11 +308,20 @@ layer-rule {
 
     // for shadow - fuzzel has 10px radius by default
     geometry-corner-radius 10
+
+    baba-is-float true
 }
 
 window-rule {
     geometry-corner-radius 8
     clip-to-geometry true
+}
+
+window-rule {
+  match is-urgent=true
+  border {
+    on
+  }
 }
 
 window-rule {
@@ -326,6 +339,12 @@ window-rule {
     exclude title="Developer Tools"
 
     open-maximized true
+}
+
+window-rule {
+  match app-id="code"
+
+  default-column-width { proportion 0.75; }
 }
 
 window-rule {
@@ -375,13 +394,9 @@ window-rule {
 window-rule {
     match is-window-cast-target=true
 
-    focus-ring {
-        active-color "#f38ba8"
-        inactive-color "#7d0d2d"
-    }
-
     border {
-        inactive-color "#7d0d2d"
+        on
+        inactive-color "#FCCA46"
     }
 
     shadow {
@@ -389,8 +404,8 @@ window-rule {
     }
 
     tab-indicator {
-        active-color "#f38ba8"
-        inactive-color "#7d0d2d"
+        active-color "#FCCA46"
+        inactive-color "#FCCA46"
     }
 }
 
@@ -427,8 +442,11 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     // Mod+Return repeat=false { spawn "alacritty"; }
+ 
+    Mod+Space { toggle-overview; }
+ 
     Mod+Return repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/open-alacritty.sh"; }
-    Mod+Space repeat=false { spawn "fuzzel"; }
+    Mod+slash repeat=false { spawn "fuzzel"; }
     Super+Shift+L repeat=false { spawn "swaylock"; }
 
     Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
@@ -438,6 +456,7 @@ binds {
     Super+Alt+j cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "+25"; }
     Super+Alt+k cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "-25"; }
     Super+Alt+u repeat=false { spawn "ydotool" "click" "0xC0"; }
+    // Super+Alt+u repeat=false { spawn "pavucontrol"; }
     Super+Alt+i repeat=false { spawn "ydotool" "click" "0xC1"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
@@ -474,7 +493,8 @@ binds {
     Mod+Ctrl+Right { move-column-right; }
     Mod+Ctrl+H  { move-column-left-or-to-monitor-left; }
     Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
-    Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
+    // Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
+    Mod+Ctrl+K { spawn "sh" "-c" "~/.config/niri/scripts/dynamic-move-to-workspace-up.sh"; }
     Mod+Ctrl+L     { move-column-right-or-to-monitor-right; }
 
     Mod+Home { focus-column-first; }
@@ -603,7 +623,7 @@ binds {
     Mod+Shift+R { reset-window-height; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
-    // Mod+Ctrl+Shift+F { toggle-windowed-fullscreen; } // next release
+    Mod+Ctrl+Shift+F { toggle-windowed-fullscreen; }
     Mod+C { center-column; }
 
     Mod+V { spawn "alacritty" "--title" "clipse" "--command" "clipse"; }
@@ -623,6 +643,8 @@ binds {
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }
 
+    Mod+MouseMiddle  { close-window; }
+
     // Actions to switch layouts.
     // Note: if you uncomment these, make sure you do NOT have
     // a matching layout switch hotkey configured in xkb options above.
@@ -631,8 +653,8 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
-    Super+Shift+S { screenshot; } // logitech screenshot button
+    Print { screenshot show-pointer=false; }
+    Super+Shift+S { screenshot show-pointer=false; } // logitech screenshot button
     Super+Shift+Ctrl+S { spawn "sh" "-c" "~/.config/niri/scripts/record-screen.sh"; }
     Alt+Super+Shift+S { screenshot-window; } // logitech screenshot button
     // Ctrl+Print { screenshot-screen; }
@@ -645,10 +667,9 @@ binds {
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
 
-    // next release
-    // Mod+Alt+W { set-dynamic-cast-window; }
-    // Mod+Alt+M { set-dynamic-cast-monitor; }
-    // Mod+Alt+R { clear-dynamic-cast-target; }
+    Mod+Alt+W { set-dynamic-cast-window; }
+    Mod+Alt+M { set-dynamic-cast-monitor; }
+    Mod+Alt+R { clear-dynamic-cast-target; }
 }
 
 hotkey-overlay {
@@ -659,7 +680,13 @@ clipboard {
     disable-primary
 }
 
+overview {
+    backdrop-color "#343434"
+}
+
+
 // next release, might help with firefox focus when clicking links
 // debug {
 //     honor-xdg-activation-with-invalid-serial
 // }
+
