@@ -8,9 +8,9 @@
 }
 
 window#waybar {
-  color: #ffffff;
+  color: #c0caf5;
   background: transparent;
-  background-color: rgba(30, 30, 46, 44);
+  background-color: #1a1b26;
   border-right: 1px solid #444444;
 }
 

@@ -1,3 +1,6 @@
+[general]
+import = ["tokyonight_night.toml"]
+
 [font]
-normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
-size = 10.0
+normal = { family = "JetBrainsMonoNL Nerd Font", style = "Regular" }
+size = 14.0

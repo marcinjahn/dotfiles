@@ -94,7 +94,7 @@ return {
         debug_dll = dll
         return dll
       end
-      dap.adapters.coreclr = {
+      dap.adapters.vsdbg = {
         id = "coreclr",
         type = "executable",
         command = "/home/mnj/.vscode/extensions/ms-dotnettools.csharp-2.72.34-linux-x64/.debugger/vsdbg-ui",
@@ -114,8 +114,8 @@ return {
 
       dap.configurations.cs = {
         {
-          type = "coreclr",
-          name = "Launch",
+          type = "vsdbg",
+          name = "Launch with vsdbg",
           request = "launch",
           program = function()
             local dll = ensure_dll()
