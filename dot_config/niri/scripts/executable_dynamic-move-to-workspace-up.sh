@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# By default, niri will not create a new workspace before the first one
+# when moving window "up". This script simulates the behavior of dynamic
+# workspace being screated at the top of current stack on demand.
+# The trick is, it moves the window down to the bottom workspace (which is always empty,
+# and then moves the whole new workspace up to the first index)
+
 set -euo pipefail
 
 workspaces_state=$(niri msg --json workspaces)
