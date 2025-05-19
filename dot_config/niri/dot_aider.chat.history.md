@@ -246,3 +246,60 @@ config.kdl
 >  
 >  
 > ^C again to exit  
+
+# aider chat started at 2025-05-19 20:05:16
+
+> No git repo found, create one to track aider's changes (recommended)? (Y)es/(N)o [Yes]: n  
+> /home/mnj/.local/bin/aider --no-auto-commits --pretty --stream --watch-files --completion-menu-bg-color=#24273a --user-input-color=#a6da95 --completion-menu-color=#cad3f5 --assistant-output-color=#c6a0f6 --tool-output-color=#8aadf4 --tool-warning-color=#eed49f --tool-error-color=#ed8796 --completion-menu-current-bg-color=#f4dbd6 --completion-menu-current-color=#181926  
+> Aider v0.83.1  
+> Main model: gemini/gemini-2.5-pro-preview-05-06 with diff-fenced edit format  
+> Weak model: gemini/gemini-2.5-flash-preview-04-17  
+> Git repo: none  
+> Repo-map: disabled  
+> Added scripts/move-focus.sh to the chat  
+> Processing your request...  
+
+Okay, I will make the requested changes to `scripts/move-focus.sh`.
+
+The script will be updated to:
+1. Get the current focused window ID *before* performing the niri action.
+2. Perform the niri action.
+3. Get the new focused window ID *after* the action.
+4. Only show a notification if the focused window has actually changed and the new window is not null.
+5. The "AI" comment will be removed.
+
+Here is the *SEARCH/REPLACE block*:
+
+```bash
+scripts/move-focus.sh
+<<<<<<< SEARCH
+NIRI_ACTION="$1"
+// AI! Sometimes, after invoking the action, the focused window stays the same (for example because there are no more windows to switch to)
+// In such case, I don't want notification to be shown
+
+niri msg action "$NIRI_ACTION"
+
+FOCUSED_WINDOW_JSON=$(niri msg --json focused-window)
+
+if [ "$FOCUSED_WINDOW_JSON" != "null" ]; then
+  WINDOW_TITLE=$(echo "$FOCUSED_WINDOW_JSON" | jq -r '.title')
+  notify-send --expire-time=500 --app-name=niri --category=niri-window-title "$WINDOW_TITLE"
+fi
+=======
+NIRI_ACTION="$1"
+
+PREV_FOCUSED_WINDOW_JSON=$(niri msg --json focused-window)
+
+niri msg action "$NIRI_ACTION"
+
+CURRENT_FOCUSED_WINDOW_JSON=$(niri msg --json focused-window)
+
+if [ "$CURRENT_FOCUSED_WINDOW_JSON" != "null" ] && [ "$PREV_FOCUSED_WINDOW_JSON" != "$CURRENT_FOCUSED_WINDOW_JSON" ]; then
+  WINDOW_TITLE=$(echo "$CURRENT_FOCUSED_WINDOW_JSON" | jq -r '.title')
+  notify-send --expire-time=500 --app-name=niri --category=niri-window-title "$WINDOW_TITLE"
+fi
+>>>>>>> REPLACE
+```
+
+> Tokens: 2.9k sent, 387 received. Cost: $0.0074 message, $0.0074 session.  
+> Applied edit to scripts/move-focus.sh  
