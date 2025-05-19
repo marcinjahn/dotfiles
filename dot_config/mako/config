@@ -1,8 +1,9 @@
 on-button-middle=dismiss-all
-background-color=#474747
+background-color=#1a1b26
+text-color=#c0caf5
 padding=10
 width=500
-border-color=#1f1f1f
+border-color=#292929
 border-radius=10
 default-timeout=30000
 max-visible=1
@@ -10,4 +11,16 @@ anchor=top-center
 group-by=app-name
 
 [mode=do-not-disturb]
+invisible=1
+
+[category=niri-window-title]
+width=200
+anchor=top-left
+history=0
+icons=0
+text-alignment=center
+default-timeout=500
+format=%s
+
+[hidden]
 invisible=1

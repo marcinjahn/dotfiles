@@ -1,0 +1,24 @@
+
+# 2025-05-19 19:12:47.633756
++N
+
+# 2025-05-19 19:16:44.748813
++y
+
+# 2025-05-19 19:16:47.647812
++/run mkdir -p ~/.config/niri/scripts
+
+# 2025-05-19 19:16:47.647884
++/run mkdir -p ~/.config/niri/scripts
+
+# 2025-05-19 19:16:47.820205
++/run chmod +x ~/.config/niri/scripts/move-focus.sh
+
+# 2025-05-19 19:16:47.820269
++/run chmod +x ~/.config/niri/scripts/move-focus.sh
+
+# 2025-05-19 19:16:54.469901
++Y
+
+# 2025-05-19 19:17:00.747468
++N

@@ -308,8 +308,6 @@ layer-rule {
 
     // for shadow - fuzzel has 10px radius by default
     geometry-corner-radius 10
-
-    baba-is-float true
 }
 
 window-rule {
@@ -446,8 +444,8 @@ binds {
     Mod+Space { toggle-overview; }
  
     Mod+Return repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/open-alacritty.sh"; }
-    Mod+slash repeat=false { spawn "fuzzel"; }
-    Super+Shift+L repeat=false { spawn "swaylock"; }
+    Mod+slash repeat=false { spawn "bash" "-c" "pkill fuzzel || fuzzel"; }
+    Super+Shift+Alt+L repeat=false { spawn "swaylock"; }
 
     Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
 
@@ -478,14 +476,14 @@ binds {
     Mod+Q { close-window; }
     Mod+T { toggle-column-tabbed-display; }
 
-    Mod+Left  { focus-column-or-monitor-left; }
-    Mod+Down  { focus-window-down; }
-    Mod+Up    { focus-window-up; }
-    Mod+Right { focus-column-or-monitor-right; }
-    Mod+H  { focus-column-or-monitor-left; }
-    Mod+J     { focus-window-or-workspace-down; }
-    Mod+K     { focus-window-or-workspace-up; }
-    Mod+L { focus-column-or-monitor-right; }
+    // Mod+Left  { focus-column-or-monitor-left; }
+    // Mod+Down  { focus-window-down; }
+    // Mod+Up    { focus-window-up; }
+    // Mod+Right { focus-column-or-monitor-right; }
+    Mod+H  { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-column-or-monitor-left"; }
+    Mod+J     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-window-or-workspace-down"; }
+    Mod+K     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-window-or-workspace-up"; }
+    Mod+L { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-column-or-monitor-right"; }
 
     Mod+Ctrl+Left  { move-column-left-or-to-monitor-left; }
     Mod+Ctrl+Down  { move-window-down-or-to-workspace-down; }
@@ -502,14 +500,14 @@ binds {
     Mod+Ctrl+Home { move-column-to-first; }
     Mod+Ctrl+End  { move-column-to-last; }
 
-    Mod+Shift+Left  { focus-monitor-left; }
-    Mod+Shift+Down  { focus-monitor-down; }
-    Mod+Shift+Up    { focus-monitor-up; }
-    Mod+Shift+Right { focus-monitor-right; }
-    Mod+Shift+H     { focus-monitor-left; }
-    Mod+Shift+J     { focus-monitor-down; }
-    Mod+Shift+K     { focus-monitor-up; }
-    Mod+Shift+L     { focus-monitor-right; }
+    Mod+Shift+Left  { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-left;"; }
+    Mod+Shift+Down     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-down;"; }
+    Mod+Shift+Up     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-up;"; }
+    Mod+Shift+Right { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-right;"; }
+    Mod+Shift+H     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-left;"; }
+    Mod+Shift+J     {  spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-down;";}
+    Mod+Shift+K     {  spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-up;";}
+    Mod+Shift+L     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-right;"; }
 
     // Mod+Shift+Ctrl+Left  { move-window-to-monitor-left; }
     // Mod+Shift+Ctrl+Down  { move-window-to-monitor-down; }
@@ -689,4 +687,6 @@ overview {
 // debug {
 //     honor-xdg-activation-with-invalid-serial
 // }
-
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
