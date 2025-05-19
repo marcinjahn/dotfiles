@@ -154,7 +154,7 @@ window#waybar > box {
   min-width: 10px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  background-color: white;
+  background-color: #c0caf5;
   border-bottom: 1px solid #444444;
   border-left: 1px solid #444444;
   border-right: 1px solid #444444;
