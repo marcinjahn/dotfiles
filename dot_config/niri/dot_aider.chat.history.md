@@ -303,3 +303,224 @@ fi
 
 > Tokens: 2.9k sent, 387 received. Cost: $0.0074 message, $0.0074 session.  
 > Applied edit to scripts/move-focus.sh  
+
+# aider chat started at 2025-05-20 17:51:34
+
+> No git repo found, create one to track aider's changes (recommended)? (Y)es/(N)o [Yes]: n  
+> /home/mnj/.local/bin/aider --no-auto-commits --pretty --stream --watch-files --user-input-color=#a6da95 --completion-menu-current-bg-color=#f4dbd6 --completion-menu-current-color=#181926 --completion-menu-bg-color=#24273a --completion-menu-color=#cad3f5 --assistant-output-color=#c6a0f6 --tool-warning-color=#eed49f --tool-error-color=#ed8796 --tool-output-color=#8aadf4  
+> Aider v0.83.1  
+> Main model: gemini/gemini-2.5-pro-preview-05-06 with diff-fenced edit format  
+> Weak model: gemini/gemini-2.5-flash-preview-04-17  
+> Git repo: none  
+> Repo-map: disabled  
+> Added scripts/move-focus.sh to the chat  
+> Processing your request...  
+
+Okay, I will update the script to dismiss previous notifications before showing a new one, using a temporary file to store the notification ID.
+
+Here are the changes:
+
+1.  Define a variable for the temporary file path.
+2.  Before sending a new notification, check if the temporary file exists. If it does, read the ID from it and use `makoctl dismiss` to close the existing notification.
+3.  Update the `notify-send` command to use the `-p` option and redirect its output (the new notification ID) to the temporary file.
+4.  Remove the AI-specific comments.
+
+```bash
+scripts/move-focus.sh
+<<<<<<< SEARCH
+set -e
+
+if [ -z "$1" ]; then
+=======
+set -e
+
+NOTIFICATION_ID_FILE="/tmp/niri_move_focus_notification_id.txt"
+
+if [ -z "$1" ]; then
+>>>>>>> REPLACE
+```
+
+```bash
+scripts/move-focus.sh
+<<<<<<< SEARCH
+if [ "$CURRENT_FOCUSED_WINDOW_JSON" != "null" ] && [ "$PREV_FOCUSED_WINDOW_JSON" != "$CURRENT_FOCUSED_WINDOW_JSON" ]; then
+  WINDOW_TITLE=$(echo "$CURRENT_FOCUSED_WINDOW_JSON" | jq -r '.title')
+  // AI! I need you to update this. The below command creates a new notification. Everything's fine until
+  // there already is some previous notification on the screen (from previous invocation of this script).
+  // Before invoking this notify-send I need to dismiss any previous notification. To do that,
+  // you can: add -p option which prints notification ID to the stdout. You can save it in some temporary file.
+  // Before notify-send, you will invoke "makoctl dismiss <ID>"  to remove any existing notification.
+  // To know the ID you will read the temporary file. You can send the file somewhere in /tmp I guess.
+  notify-send --expire-time=500 --app-name=niri --category=niri-window-title "$WINDOW_TITLE"
+fi
+=======
+if [ "$CURRENT_FOCUSED_WINDOW_JSON" != "null" ] && [ "$PREV_FOCUSED_WINDOW_JSON" != "$CURRENT_FOCUSED_WINDOW_JSON" ]; then
+  WINDOW_TITLE=$(echo "$CURRENT_FOCUSED_WINDOW_JSON" | jq -r '.title')
+
+  # Dismiss previous notification if one exists
+  if [ -f "$NOTIFICATION_ID_FILE" ]; then
+    PREVIOUS_NOTIFICATION_ID=$(cat "$NOTIFICATION_ID_FILE")
+    if [ -n "$PREVIOUS_NOTIFICATION_ID" ]; then
+      makoctl dismiss "$PREVIOUS_NOTIFICATION_ID" > /dev/null 2>&1 || true # Ignore errors if notification is already gone
+    fi
+  fi
+
+  # Send new notification and store its ID
+  notify-send -p --expire-time=500 --app-name=niri --category=niri-window-title "$WINDOW_TITLE" > "$NOTIFICATION_ID_FILE"
+fi
+>>>>>>> REPLACE
+```
+
+> Tokens: 3.1k sent, 610 received. Cost: $0.0100 message, $0.0100 session.  
+> Applied edit to scripts/move-focus.sh  
+> Processing your request...  
+
+Okay, I will modify the script to dismiss the notification if the `CURRENT_FOCUSED_WINDOW_JSON` is `"null"`, and also remove the AI comment.
+
+The logic will be:
+1.  If the current focused window JSON is `"null"`, dismiss any existing notification.
+2.  Else, if the current focused window JSON is not `"null"` AND it has changed from the previous one, then dismiss the old notification and show a new one for the current window.
+
+Here's the *SEARCH/REPLACE block*:
+
+```bash
+scripts/move-focus.sh
+<<<<<<< SEARCH
+CURRENT_FOCUSED_WINDOW_JSON=$(niri msg --json focused-window)
+
+// AI! I want you to dismiss the notification also when json is "null"
+if [ "$CURRENT_FOCUSED_WINDOW_JSON" != "null" ] && [ "$PREV_FOCUSED_WINDOW_JSON" != "$CURRENT_FOCUSED_WINDOW_JSON" ]; then
+  WINDOW_TITLE=$(echo "$CURRENT_FOCUSED_WINDOW_JSON" | jq -r '.title')
+
+  # Dismiss previous notification if one exists
+  if [ -f "$NOTIFICATION_ID_FILE" ]; then
+    PREVIOUS_NOTIFICATION_ID=$(cat "$NOTIFICATION_ID_FILE")
+    if [ -n "$PREVIOUS_NOTIFICATION_ID" ]; then
+      makoctl dismiss "$PREVIOUS_NOTIFICATION_ID" >/dev/null 2>&1 || true
+    fi
+  fi
+
+  notify-send -p --expire-time=1000 --app-name=niri --category=niri-window-title "$WINDOW_TITLE" >"$NOTIFICATION_ID_FILE"
+fi
+=======
+CURRENT_FOCUSED_WINDOW_JSON=$(niri msg --json focused-window)
+
+if [ "$CURRENT_FOCUSED_WINDOW_JSON" == "null" ]; then
+  # If no window is focused (e.g., on an empty output), dismiss any existing notification
+  if [ -f "$NOTIFICATION_ID_FILE" ]; then
+    PREVIOUS_NOTIFICATION_ID=$(cat "$NOTIFICATION_ID_FILE")
+    if [ -n "$PREVIOUS_NOTIFICATION_ID" ]; then
+      makoctl dismiss "$PREVIOUS_NOTIFICATION_ID" >/dev/null 2>&1 || true
+      # Clear the stored ID as there's no active notification
+      echo "" > "$NOTIFICATION_ID_FILE"
+    fi
+  fi
+elif [ "$PREV_FOCUSED_WINDOW_JSON" != "$CURRENT_FOCUSED_WINDOW_JSON" ]; then
+  # If focus changed to a new, non-null window
+  WINDOW_TITLE=$(echo "$CURRENT_FOCUSED_WINDOW_JSON" | jq -r '.title')
+
+  # Dismiss previous notification if one exists
+  if [ -f "$NOTIFICATION_ID_FILE" ]; then
+    PREVIOUS_NOTIFICATION_ID=$(cat "$NOTIFICATION_ID_FILE")
+    if [ -n "$PREVIOUS_NOTIFICATION_ID" ]; then
+      makoctl dismiss "$PREVIOUS_NOTIFICATION_ID" >/dev/null 2>&1 || true
+    fi
+  fi
+
+  # Send new notification and store its ID
+  notify-send -p --expire-time=1000 --app-name=niri --category=niri-window-title "$WINDOW_TITLE" >"$NOTIFICATION_ID_FILE"
+fi
+>>>>>>> REPLACE
+```
+
+> Tokens: 3.9k sent, 651 received. Cost: $0.01 message, $0.02 session.  
+> Applied edit to scripts/move-focus.sh  
+> Processing your request...  
+
+Okay, I will refactor the notification dismissal logic into a bash function to reduce code duplication and remove the AI comment.
+
+Here's the plan:
+1.  Create a new function `dismiss_current_notification` that encapsulates the logic for reading the notification ID from `$NOTIFICATION_ID_FILE` and calling `makoctl dismiss`.
+2.  Call this new function in the two places where notifications are currently dismissed.
+
+Here are the *SEARCH/REPLACE* blocks:
+
+```bash
+scripts/move-focus.sh
+<<<<<<< SEARCH
+# Displays notification with window name on focus change
+
+set -e
+
+NOTIFICATION_ID_FILE="/tmp/niri_move_focus_notification_id.txt"
+
+if [ -z "$1" ]; then
+=======
+# Displays notification with window name on focus change
+
+set -e
+
+NOTIFICATION_ID_FILE="/tmp/niri_move_focus_notification_id.txt"
+
+# Function to dismiss the currently tracked notification
+dismiss_current_notification() {
+  if [ -f "$NOTIFICATION_ID_FILE" ]; then
+    PREVIOUS_NOTIFICATION_ID=$(cat "$NOTIFICATION_ID_FILE")
+    if [ -n "$PREVIOUS_NOTIFICATION_ID" ]; then
+      makoctl dismiss "$PREVIOUS_NOTIFICATION_ID" >/dev/null 2>&1 || true
+      # Clear the stored ID if we are dismissing it without showing a new one immediately
+      # This part is context-dependent, so the caller might need to handle echo "" > "$NOTIFICATION_ID_FILE"
+    fi
+  fi
+}
+
+if [ -z "$1" ]; then
+>>>>>>> REPLACE
+```
+
+```bash
+scripts/move-focus.sh
+<<<<<<< SEARCH
+if [ "$CURRENT_FOCUSED_WINDOW_JSON" == "null" ]; then
+  # If no window is focused (e.g., on an empty output), dismiss any existing notification
+  # AI! Maybe it's possible to reuse some dismissing code, maybe in some function?
+  if [ -f "$NOTIFICATION_ID_FILE" ]; then
+    PREVIOUS_NOTIFICATION_ID=$(cat "$NOTIFICATION_ID_FILE")
+    if [ -n "$PREVIOUS_NOTIFICATION_ID" ]; then
+      makoctl dismiss "$PREVIOUS_NOTIFICATION_ID" >/dev/null 2>&1 || true
+      # Clear the stored ID as there's no active notification
+      echo "" >"$NOTIFICATION_ID_FILE"
+    fi
+  fi
+elif [ "$PREV_FOCUSED_WINDOW_JSON" != "$CURRENT_FOCUSED_WINDOW_JSON" ]; then
+  # If focus changed to a new, non-null window
+  WINDOW_TITLE=$(echo "$CURRENT_FOCUSED_WINDOW_JSON" | jq -r '.title')
+
+  # Dismiss previous notification if one exists
+  if [ -f "$NOTIFICATION_ID_FILE" ]; then
+    PREVIOUS_NOTIFICATION_ID=$(cat "$NOTIFICATION_ID_FILE")
+    if [ -n "$PREVIOUS_NOTIFICATION_ID" ]; then
+      makoctl dismiss "$PREVIOUS_NOTIFICATION_ID" >/dev/null 2>&1 || true
+    fi
+  fi
+
+  # Send new notification and store its ID
+=======
+if [ "$CURRENT_FOCUSED_WINDOW_JSON" == "null" ]; then
+  # If no window is focused (e.g., on an empty output), dismiss any existing notification
+  dismiss_current_notification
+  # Clear the stored ID as there's no active notification
+  echo "" >"$NOTIFICATION_ID_FILE"
+elif [ "$PREV_FOCUSED_WINDOW_JSON" != "$CURRENT_FOCUSED_WINDOW_JSON" ]; then
+  # If focus changed to a new, non-null window
+  WINDOW_TITLE=$(echo "$CURRENT_FOCUSED_WINDOW_JSON" | jq -r '.title')
+
+  # Dismiss previous notification if one exists
+  dismiss_current_notification
+
+  # Send new notification and store its ID
+>>>>>>> REPLACE
+```
+
+> Tokens: 4.9k sent, 768 received. Cost: $0.01 message, $0.04 session.  
+> Applied edit to scripts/move-focus.sh  
