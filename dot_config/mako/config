@@ -22,5 +22,8 @@ text-alignment=center
 default-timeout=500
 format=%s
 
+[category=niri-window-title mode=do-not-disturb]
+invisible=0
+
 [hidden]
 invisible=1
