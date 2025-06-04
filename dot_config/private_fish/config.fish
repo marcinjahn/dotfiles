@@ -7,6 +7,7 @@ set -gx DOCKER_HOST unix:///run/user/1000/podman/podman.sock
 # set -gx NVM_LAZY_LOAD true
 # set -gx NVM_COMPLETION true
 set -gx DOTNET_CLI_TELEMETRY_OPTOUT 1
+set -gx DOTNET_UPGRADEASSISTANT_TELEMETRY_OPTOUT 1
 set -gx FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT 1
 set -gx DOTNET_ROOT $HOME/.dotnet
 set -gx ASDF_GOLANG_MOD_VERSION_ENABLED true
@@ -49,6 +50,8 @@ set --erase _asdf_shims
 
 if status is-interactive
     alias v="nvim"
+    abbr --add wifilist nmcli device wifi list
+    abbr --add wificonnect nmcli device wifi connect
 end
 
 # starship init fish | source
