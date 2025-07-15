@@ -1,0 +1,10 @@
+{
+  "theme": "Default",
+  "selectedAuthType": "gemini-api-key",
+  "contextFileName": "llm-conventions.md",
+  "telemetry": {
+    "enabled": false
+  },
+  "usageStatisticsEnabled": false
+}
+

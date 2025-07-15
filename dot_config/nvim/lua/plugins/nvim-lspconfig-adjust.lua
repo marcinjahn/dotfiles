@@ -36,6 +36,9 @@ return {
       end,
     },
     servers = {
+      denols = {
+        enabled = false,
+      },
       omnisharp = {
         enabled = false,
         handlers = {
@@ -77,7 +80,16 @@ return {
         enable_import_completion = true,
       },
       angularls = {
-        root_dir = util.root_pattern("angular.json", "project.json"),
+        root_dir = util.root_pattern("angular.json", "nx.json"),
+      },
+      vtsls = {
+        root_dir = util.root_pattern(".git"),
+      },
+      cssmodules_ls = {
+        root_dir = util.root_pattern("nx.json", "package.json"),
+      },
+      eslint = {
+        root_dir = util.root_pattern("nx.json", "package.json"),
       },
     },
   },

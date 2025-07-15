@@ -11,7 +11,7 @@ return {
         --   return require("conform.util").root_file(".csproj")(a, ctx)
         -- end,
         command = "dotnet",
-        args = { "csharpier", "--write-stdout" },
+        args = { "csharpier", "format", "--write-stdout" },
       },
     },
   },

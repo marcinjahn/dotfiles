@@ -16,3 +16,22 @@
 
 # 2025-02-02 18:58:11.010387
 +No
+
+# 2025-06-26 15:25:38.327425
++N
+
+# 2025-06-26 15:31:58.078566
++Add an alias that invokes gemini command when I run ai
+
+# 2025-06-26 15:34:15.190617
++N
+
+# 2025-06-26 15:36:10.216401
++it still doesn't work. When I run "ai", it prints nothing, I just land at another shell prompt. But when I invoke "gemini" it runs gemini app
++
+
+# 2025-06-26 15:40:35.081297
++move this new function to functions directory
+
+# 2025-06-26 15:41:05.194630
++Y

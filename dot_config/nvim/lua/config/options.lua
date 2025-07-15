@@ -15,6 +15,14 @@ vim.fn.sign_define("DapBreakpoint", { text = "🟥", texthl = "", linehl = "", n
 vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "", numhl = "" })
 
 -- vim.api.nvim_add_user_command("CopyPath", "call setreg('+', expand('%'))", {})
+vim.api.nvim_create_user_command("CopyAbsolutePath", function()
+  vim.fn.setreg("+", vim.fn.expand("%:p"))
+end, {})
+
+-- doesn't work
+vim.api.nvim_create_user_command("CopyRelativePath", function()
+  vim.fn.setreg("+", vim.fn.expand("%"))
+end, {})
 --
 -- vim.diagnostic.config({
 --   virtual_lines = true,
