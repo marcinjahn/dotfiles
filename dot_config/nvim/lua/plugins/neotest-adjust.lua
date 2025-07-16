@@ -12,15 +12,15 @@ return {
     opts = {
       adapters = {
         ["neotest-jest"] = {
-          jestCommand = "npm test --",
-          jestConfigFile = "custom.jest.config.ts",
+          -- jestCommand = "npm test --",
+          -- jestConfigFile = "custom.jest.config.ts",
           -- env = { CI = true },
-          cwd = function(path)
-            return vim.fn.getcwd()
-          end,
+          -- cwd = function(path)
+          --   return vim.fn.getcwd()
+          -- end,
         },
-        ["neotest-vitest"] = {},
-        -- ["neotest-easy-dotnet"] = {},
+        -- ["neotest-vitest"] = {},
+        -- require("easy-dotnet.neotest.adapter").Adapter,
         ["neotest-vstest"] = {},
         -- ["neotest-dotnet"] = {
         --   discovery_root = "solution",
