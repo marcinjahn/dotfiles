@@ -1,4 +1,4 @@
-if pgrep -x "pavucontrol" >/dev/null; then pkill -x "pavucontrol"; else
-  pavucontrol --tab 3 &
+if pgrep -x "wiremix" >/dev/null; then pkill -x "wiremix"; else
+  alacritty -e wiremix &
   disown
 fi
