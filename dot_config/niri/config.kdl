@@ -447,6 +447,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+G repeat=false { switch-focus-between-floating-and-tiling; }
+    Mod+N repeat=false { spawn "bash" "-c" "makoctl dismiss --all"; }
 
     // Alt+Tab { spawn "sh" "-c" "~/.config/niri/scripts/window-switcher.sh"; }
 
