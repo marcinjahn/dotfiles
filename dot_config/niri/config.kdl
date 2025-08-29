@@ -486,7 +486,7 @@ binds {
     XF86MonBrightnessDown  allow-when-locked=true cooldown-ms=50 { spawn "brightnessctl" "s" "5%-"; }
     // XF86MonBrightnessUp  allow-when-locked=true { spawn "notify-send" "test";}
 
-    Mod+Q { close-window; }
+    Mod+Q repeat=false { close-window; }
     Mod+T { toggle-column-tabbed-display; }
 
     // Mod+Left  { focus-column-or-monitor-left; }
