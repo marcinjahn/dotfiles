@@ -81,7 +81,9 @@ return {
   {
     "seblyng/roslyn.nvim",
     vscode = false,
-    ft = "cs",
+    -- ft = "cs",
+    ---@module 'roslyn.config'
+    ---@type RoslynNvimConfig
     opts = {},
   },
 }

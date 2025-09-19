@@ -4,6 +4,9 @@ return {
   opts = {
     formatters_by_ft = {
       cs = { "csharpier" },
+      csproj = { "csharpier" },
+      sln = { "csharpier" },
+      slnx = { "csharpier" },
     },
     formatters = {
       csharpier = {

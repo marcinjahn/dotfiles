@@ -19,11 +19,15 @@ vim.api.nvim_create_user_command("CopyAbsolutePath", function()
   vim.fn.setreg("+", vim.fn.expand("%:p"))
 end, {})
 
--- doesn't work
 vim.api.nvim_create_user_command("CopyRelativePath", function()
   vim.fn.setreg("+", vim.fn.expand("%"))
 end, {})
---
+
+vim.api.nvim_create_user_command("CopyFileName", function()
+  vim.fn.setreg("+", vim.fn.expand("%:t"))
+end, {})
+
+-- This introduces a lof of noise, but it's an option
 -- vim.diagnostic.config({
 --   virtual_lines = true,
 --
