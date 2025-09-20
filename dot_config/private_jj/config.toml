@@ -7,15 +7,26 @@ email = "10273406+marcinjahn@users.noreply.github.com"
 
 [ui]
 default-command = "log"
+merge-editor = "diffconflicts"
 
 [merge-tools.diffconflicts]
 program = "nvim"
-merge-args = ["-c", "JJDiffConflicts!", "$output", "$base", "$left", "$right"]
+merge-args = [
+  "-c",
+  "let g:jj_diffconflicts_marker_length=$marker_length",
+  "-c",
+  "JJDiffConflicts!",
+  "$output",
+  "$base",
+  "$left",
+  "$right",
+]
 merge-tool-edits-conflict-markers = true
 
 [git]
 push-new-bookmarks = true
 private-commits = '''description(glob:'private:*')'''
+colocate = true
 
 [templates]
 backout_description = '''
