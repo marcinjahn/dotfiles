@@ -20,6 +20,7 @@ if [ "$focused_idx" -ne 1 ]; then
 else
   last_workspace_idx=$(echo "$workspaces_state" | jq --arg output "$focused_output" '.[] | select(.output == $output) | .idx' | sort -n | tail -n 1)
 
-  niri msg action move-window-to-workspace "$last_workspace_idx"
-  niri msg action move-workspace-to-index 1
+  niri msg action move-window-to-workspace --focus false "$last_workspace_idx"
+  niri msg action move-workspace-to-index --reference "$last_workspace_idx" 1
+  niri msg action focus-workspace-up
 fi
