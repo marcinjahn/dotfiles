@@ -243,11 +243,10 @@ layout {
 
 spawn-at-startup "ydotoold"
 spawn-at-startup "fuzzel"
-spawn-at-startup "xwayland-satellite" ":12"
 spawn-at-startup "clipse" "-listen"
 
 environment {
-    DISPLAY ":12"
+    // DISPLAY ":12"
     ELECTRON_OZONE_PLATFORM_HINT "auto"
 }
 
@@ -342,6 +341,7 @@ window-rule {
 
 window-rule {
     match app-id="firefox"
+    match app-id="zen"
     match app-id="chrome"
     match app-id="chromium"
     match app-id="edge"
@@ -697,10 +697,7 @@ overview {
 }
 
 
-// next release, might help with firefox focus when clicking links
-// debug {
-//     honor-xdg-activation-with-invalid-serial
-// }
+// For going to browser when clicking links
 debug {
     honor-xdg-activation-with-invalid-serial
 }
