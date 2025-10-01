@@ -535,9 +535,6 @@ binds {
     // Mod+Shift+Ctrl+Left  { move-window-to-monitor-left; }
     // ...
 
-    // And you can also move a whole workspace to another monitor:
-    Mod+Shift+Ctrl+Alt+H  { move-workspace-to-monitor-left; }
-    Mod+Shift+Ctrl+Alt+L  { move-workspace-to-monitor-right; }
     Mod+Shift+Ctrl+Alt+K  { move-workspace-to-monitor-up; }
     Mod+Shift+Ctrl+Alt+J  { move-workspace-to-monitor-down; }
     // ...
@@ -557,6 +554,8 @@ binds {
 
     Mod+Ctrl+Alt+J { move-workspace-down; }
     Mod+Ctrl+Alt+K   { move-workspace-up; }
+    Mod+Ctrl+Alt+H  { move-workspace-to-monitor-left; }
+    Mod+Ctrl+Alt+L  { move-workspace-to-monitor-right; }
 
     // You can bind mouse wheel scroll ticks using the following syntax.
     // These binds will change direction based on the natural-scroll setting.
