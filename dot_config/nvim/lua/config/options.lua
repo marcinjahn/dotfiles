@@ -6,10 +6,10 @@ vim.opt.textwidth = 100
 vim.o.mousemoveevent = true
 
 -- https://github.com/swaits/zellij-nav.nvim
-vim.api.nvim_create_autocmd("VimLeave", {
-  pattern = "*",
-  command = "silent !zellij action switch-mode normal",
-})
+-- vim.api.nvim_create_autocmd("VimLeave", {
+--   pattern = "*",
+--   command = "silent !zellij action switch-mode normal",
+-- })
 
 vim.fn.sign_define("DapBreakpoint", { text = "🟥", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "", numhl = "" })
@@ -29,7 +29,7 @@ end, {})
 
 -- This introduces a lof of noise, but it's an option
 -- vim.diagnostic.config({
---   virtual_lines = true,
+-- virtual_lines = false,
 --
 --   -- Alternatively, customize specific options
 --   -- virtual_lines = {

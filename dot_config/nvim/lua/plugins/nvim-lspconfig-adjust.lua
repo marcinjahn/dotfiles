@@ -88,9 +88,9 @@ return {
       cssmodules_ls = {
         root_dir = util.root_pattern("nx.json", "package.json"),
       },
-      eslint = {
-        root_dir = util.root_pattern("nx.json", "package.json"),
-      },
+      -- eslint = {
+      --   root_dir = util.root_pattern("nx.json", "package.json"),
+      -- },
     },
   },
 }

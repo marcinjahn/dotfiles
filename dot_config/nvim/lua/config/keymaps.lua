@@ -6,3 +6,6 @@
 --   desc = "Show Window menu",
 --   remap = true,
 -- })
+
+-- Delete single character without yanking
+vim.keymap.set("n", "x", '"_x', { desc = "Delete char without yanking" })

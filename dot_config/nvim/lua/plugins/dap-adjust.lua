@@ -124,6 +124,7 @@ return {
             if not file_exists(dll.target_path) then
               error("Project has not been built, path: " .. dll.target_path)
             end
+            require("easy-dotnet.netcoredbg").register_dap_variables_viewer()
             return dll.target_path
           end,
           args = {},
