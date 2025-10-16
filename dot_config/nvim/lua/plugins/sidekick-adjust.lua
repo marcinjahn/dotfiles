@@ -1,15 +1,30 @@
 return {
   {
     "folke/sidekick.nvim",
+    opts = {
+      cli = {
+        mux = {
+          backend = "zellij",
+          enabled = false,
+        },
+      },
+    },
     keys = {
       {
-        "<leader>aa",
+        "<leader>af",
         function()
-          require("sidekick.cli").toggle({ name = "claude", focus = true })
+          require("sidekick.cli").send({ msg = "{file}" })
         end,
-        desc = "Sidekick Claude Toggle",
-        mode = { "n", "v" },
+        desc = "Send File",
       },
+      --   {
+      --     "<leader>aa",
+      --     function()
+      --       require("sidekick.cli").toggle({ name = "claude", focus = true })
+      --     end,
+      --     desc = "Sidekick Claude Toggle",
+      --     mode = { "n", "v" },
+      --   },
     },
   },
 }
