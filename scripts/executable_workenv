@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Launch apps in the background
+niri msg action spawn -- slack
+niri msg action spawn -- flatpak run org.mozilla.Thunderbird
+niri msg action spawn -- alacritty --command connect-vpn
+niri msg action spawn -- flatpak run app.zen_browser.zen
+
+# Give the apps time to start
+sleep 3
+
+# Function to get the last window ID for a given app ID
+get_window_id_by_app_id() {
+  local app_id="$1"
+  niri msg windows | grep -B 2 "App ID: \"$app_id\"" | grep "Window ID" | awk '{print $3}' | sed 's/://' | tail -n 1
+}
+
+# Function to move a window to a workspace
+move_window() {
+  local window_id="$1"
+  local output_id="$2"
+  local workspace="$3"
+
+  if [ -n "$window_id" ]; then
+    niri msg action focus-window --id "$window_id"
+    niri msg action move-column-to-monitor "$output_id"
+    niri msg action move-window-to-workspace "$workspace"
+  fi
+}
+
+# Get window IDs
+slack_id=$(get_window_id_by_app_id "Slack")
+thunderbird_id=$(get_window_id_by_app_id "org.mozilla.Thunderbird")
+browser_id=$(get_window_id_by_app_id "app.zen_browser.zen")
+alacritty_vpn_id=$(get_window_id_by_app_id "Alacritty")
+
+# Move windows
+move_window "$slack_id" "Lenovo Group Limited 0x40A9 Unknown" 1
+move_window "$thunderbird_id" "Lenovo Group Limited 0x40A9 Unknown" 2
+move_window "$browser_id" "LG Electronics LG ULTRAGEAR 203NTQD77460" 1
+move_window "$alacritty_vpn_id" "Lenovo Group Limited 0x40A9 Unknown" 3
