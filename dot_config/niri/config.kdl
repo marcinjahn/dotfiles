@@ -327,6 +327,13 @@ layer-rule {
     place-within-backdrop true
 }
 
+// window-rule {
+//   match is-active=false
+//
+//   No animation, so it kinda sucks
+//   opacity 0.7
+// }
+
 window-rule {
     geometry-corner-radius 8
     clip-to-geometry true
@@ -473,6 +480,8 @@ binds {
     Super+Shift+Alt+L repeat=false { spawn "swaylock"; }
 
     Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
+
+    Super+B repeat=false {spawn "sh" "-c" "~/.config/niri/scripts/open-browser.sh";}
 
     Super+Alt+h cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "-25" "-y" "0"; }
     Super+Alt+l cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "+25" "-y" "0"; }
