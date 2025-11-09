@@ -241,10 +241,11 @@ layout {
 // See the binds section below for more spawn examples.
 // spawn-at-startup "alacritty" "-e" "fish"
 
-spawn-at-startup "ydotoold"
-spawn-at-startup "fuzzel"
-spawn-at-startup "clipse" "-listen"
+// spawn-at-startup "ydotoold"
+// spawn-at-startup "fuzzel"
+spawn-sh-at-startup "clipse -listen"
 spawn-at-startup "{{POLKIT_AGENT_PATH}}"
+spawn-sh-at-startup "~/bin/vicinae/bin/vicinae server --no-replace --open"
 
 environment {
     // DISPLAY ":12"
@@ -476,7 +477,8 @@ binds {
     Mod+Space repeat=false { toggle-overview; }
  
     Mod+Return repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/open-terminal.sh"; }
-    Mod+slash repeat=false { spawn "bash" "-c" "pkill fuzzel || fuzzel"; }
+    // Mod+slash repeat=false { spawn "bash" "-c" "pkill fuzzel || fuzzel"; }
+    Mod+slash repeat=false { spawn "~/bin/vicinae/bin/vicinae" "toggle"; }
     Super+Shift+Alt+L repeat=false { spawn "swaylock"; }
 
     Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }

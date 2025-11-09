@@ -30,7 +30,7 @@ else
   echo "$FILENAME" >"$TMP_FILE"
 
   if geometry=$(slurp); then
-    wl-screenrec -g "$geometry" -f "$FILENAME" -b "2 MB" --encode-resolution 1920x1080 &
+    wl-screenrec -g "$geometry" -f "$FILENAME" -b "2 MB" &
     sleep 0.1
     pkill -SIGRTMIN+8 waybar # display recording indicator on waybar
   else
