@@ -668,6 +668,8 @@ binds {
     Mod+Alt+W { set-dynamic-cast-window; }
     Mod+Alt+M { set-dynamic-cast-monitor; }
     Mod+Alt+R { clear-dynamic-cast-target; }
+
+    Mod+Alt+D { spawn-sh "pkill -SIGUSR1 wayscriber";}
 }
 
 clipboard {
