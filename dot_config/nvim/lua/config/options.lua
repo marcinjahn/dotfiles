@@ -27,6 +27,9 @@ vim.api.nvim_create_user_command("CopyFileName", function()
   vim.fn.setreg("+", vim.fn.expand("%:t"))
 end, {})
 
+-- for Copilot
+vim.g.copilot_node_command = "~/.asdf/installs/nodejs/25.1.0/bin/node"
+
 -- This introduces a lof of noise, but it's an option
 -- vim.diagnostic.config({
 -- virtual_lines = false,

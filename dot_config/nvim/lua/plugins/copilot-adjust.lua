@@ -11,7 +11,7 @@ return {
       --     accept = "<M-l>", -- normally handled by nvim-cmp / blink.cmp
       --   },
       -- },
-      copilot_node_command = vim.fn.expand("$HOME") .. "/.asdf/installs/nodejs/23.2.0/bin/node", -- Node.js version must be > 22
+      copilot_node_command = vim.fn.expand("$HOME") .. "/.asdf/installs/nodejs/25.1.0/bin/node", -- Node.js version must be > 22
     },
   },
   -- { "zbirenbaum/copilot-cmp", vscode = false, enabled = false },
