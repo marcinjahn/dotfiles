@@ -1,0 +1,55 @@
+layout {
+    background-color "transparent"
+
+    focus-ring {
+        width 4
+        active-color "#ba4141"
+        inactive-color "#5e4848"
+        urgent-color   "#ffb4ab"
+    }
+
+    border {
+        // The settings are the same as for the focus ring.
+        // If you enable the border, you probably want to disable the focus ring.
+        off
+
+        width 4
+        active-color "#ffc87f"
+        inactive-color "#505050"
+        urgent-color "#9b0000"
+
+    }
+
+
+    shadow {
+        color "#00000070"
+    }
+
+    // tab-indicator {
+    //     active-color   "#9dcbfb"
+    //     inactive-color "#8c9199"
+    //     urgent-color   "#ffb4ab"
+    // }
+
+    tab-indicator {
+        // hide-when-single-tab
+        place-within-column
+        width 8
+        position "left"
+        gap 10
+        // corner-radius: 8 //next release?
+        // gaps-between-tabs: 2 //next release?
+    }
+
+
+    insert-hint {
+      color "#ba595944"
+    }
+}
+
+recent-windows {
+    highlight {
+        active-color   "#124a73"
+        urgent-color   "#ffb4ab"
+    }
+}

@@ -1,11 +1,60 @@
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Introduction
-config-notification {
-    disable-failed
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Overview
+
+// Input device configuration.
+// Find the full list of options on the wiki:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Input
+input {
+    keyboard {
+        xkb {
+            // You can set rules, model, layout, variant and options.
+            // For more information, see xkeyboard-config(7).
+
+            // For example:
+            // layout "us,ru"
+            // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
+            //
+            layout "pl"
+        }
+    }
+
+    // Next sections include libinput settings.
+    // Omitting settings disables them, or leaves them at their default values.
+    touchpad {
+        // off
+        tap
+        dwt
+        // dwtp
+        natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "two-finger"
+        // disabled-on-external-mouse
+    }
+
+    mouse {
+        // off
+        // natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "no-scroll"
+    }
+
+    // Uncomment this to make the mouse warp to the center of newly focused windows.
+    // warp-mouse-to-focus
+
+    // Focus windows and outputs automatically when moving the mouse into them.
+    focus-follows-mouse
 }
-// Outputs from existing configuration
+
+// You can configure outputs by their name, which you can find
+// by running `niri msg outputs` while inside a niri instance.
+// The built-in laptop monitor is usually called "eDP-1".
+// Find more information on the wiki:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
+// Remember to uncomment the node by removing "/-"!
 output "LG Electronics LG ULTRAGEAR 203NTQD77460" {
   mode "2560x1440@143.933"
   position x=1280 y=-700
@@ -58,47 +107,15 @@ output "eDP-1" {
 }
 
 
-gestures {
-    hot-corners {
-        off
-    }
-}
-
-// Input device configuration.
-// Find the full list of options on the wiki:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Input
-input {
-    keyboard {
-        xkb {
-            layout "pl"
-        }
-    }
-    touchpad {
-        tap
-        dwt
-        // dwtp
-        natural-scroll
-    }
-    mouse {
-    }
-    trackpoint {
-    }
-
-    focus-follows-mouse
-}
-// You can configure outputs by their name, which you can find
-// by running `niri msg outputs` while inside a niri instance.
-// The built-in laptop monitor is usually called "eDP-1".
-// Find more information on the wiki:
-// https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
-// Remember to uncomment the node by removing "/-"!
-
 // Settings that influence how windows are positioned and sized.
-// Find more information on the wiki:
+// Find more information on the wiki:0
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    background-color "transparent"
+    gaps 12 
+
+    // empty-workspace-above-first
+
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
     //   or right edge of the screen.
@@ -107,6 +124,7 @@ layout {
     //   together with the previously focused column.
     center-focused-column "never"
     always-center-single-column
+
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
         // Proportion sets the width as a fraction of the output width, taking gaps into account.
@@ -115,15 +133,16 @@ layout {
         proportion 0.33333
         proportion 0.5
         proportion 0.66667
+
         // Fixed sets the width in logical pixels exactly.
         // fixed 1920
     }
-    // You can also customize the heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
-    // preset-window-heights { }
+
     // You can change the default width of the new windows.
     default-column-width { proportion 0.5; }
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
+
     // By default focus ring and border are rendered as a solid background rectangle
     // behind windows. That is, they will show up through semitransparent windows.
     // This is because windows using client-side decorations can have an arbitrary shape.
@@ -134,21 +153,70 @@ layout {
     //
     // Alternatively, you can override it with a window rule called
     // `draw-border-with-background`.
-    border {
-        off
+
+    // You can change how the focus ring looks.
+    focus-ring {
+        // Uncomment this line to disable the focus ring.
+        // off
+
+        // How many logical pixels the ring extends out from the windows.
         width 4
-        active-color   "#707070"      // Neutral gray
-        inactive-color "#d0d0d0"      // Light gray
-        urgent-color   "#cc4444"      // Softer red
+
+        // Colors can be set in a variety of ways:
+        // - CSS named colors: "red"
+        // - RGB hex: "#rgb", "#rgba", "#rrggbb", "#rrggbbaa"
+        // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
+
+        // Color of the ring on the active monitor.
+        active-color "#ba4141"
+
+        // Color of the ring on inactive monitors.
+        inactive-color "#5e4848"
+
+        // You can also use gradients. They take precedence over solid colors.
+        // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
+        // The angle is the same as in linear-gradient, and is optional,
+        // defaulting to 180 (top-to-bottom gradient).
+        // You can use any CSS linear-gradient tool on the web to set these up.
+        //
+        // active-gradient from="#ba4141" to="#4c2727" angle=45
+
+        // You can also color the gradient relative to the entire view
+        // of the workspace, rather than relative to just the window itself.
+        // To do that, set relative-to="workspace-view".
+        //
+        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
+
     shadow {
-        on
-        softness 30
-        spread 5
-        offset x=0 y=5
-        color "#0007"
+      on
     }
+
+    // You can also add a border. It's similar to the focus ring, but always visible.
+    border {
+        // The settings are the same as for the focus ring.
+        // If you enable the border, you probably want to disable the focus ring.
+        off
+
+        width 4
+        active-color "#ffc87f"
+        inactive-color "#505050"
+        urgent-color "#9b0000"
+
+        // active-gradient from="#ffbb66" to="#ffc880" angle=45 relative-to="workspace-view"
+        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+    }
+
+    // Struts shrink the area occupied by windows, similarly to layer-shell panels.
+    // You can think of them as a kind of outer gaps. They are set in logical pixels.
+    // Left and right struts will cause the next window to the side to always be visible.
+    // Top and bottom struts will simply add outer gaps in addition to the area occupied by
+    // layer-shell panels and regular gaps.
     struts {
+        // left 64
+        // right 64
+        // top 64
+        // bottom 64
     }
 
     tab-indicator {
@@ -160,76 +228,136 @@ layout {
         // corner-radius: 8 //next release?
         // gaps-between-tabs: 2 //next release?
     }
+
+    // next release?
+    // insert-hint {
+    //   color: "#ba5959"
+    // }
 }
-layer-rule {
-    match namespace="^quickshell$"
-    place-within-backdrop true
-}
-overview {
-    workspace-shadow {
-        off
-    }
-}
+
 // Add lines like this to spawn processes at startup.
 // Note that running niri as a session supports xdg-desktop-autostart,
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
+// spawn-at-startup "alacritty" "-e" "fish"
+
+// spawn-at-startup "ydotoold"
+// spawn-at-startup "fuzzel"
 spawn-sh-at-startup "clipse -listen"
-// spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store &"
+spawn-at-startup "{{POLKIT_AGENT_PATH}}"
 spawn-sh-at-startup "~/bin/vicinae/bin/vicinae server --replace --open"
 
 environment {
+    // DISPLAY ":12"
     ELECTRON_OZONE_PLATFORM_HINT "auto"
     XDG_CURRENT_DESKTOP "niri:GNOME"
 }
-hotkey-overlay {
-    skip-at-startup
-}
+
+// Uncomment this line to ask the clients to omit their client-side decorations if possible.
+// If the client will specifically ask for CSD, the request will be honored.
+// Additionally, clients will be informed that they are tiled, removing some rounded corners.
 prefer-no-csd
+
+// You can change the path where screenshots are saved.
+// A ~ at the front will be expanded to the home directory.
+// The path is formatted with strftime(3) to give you the screenshot date and time.
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
-// animations {
-//     workspace-switch {
-//         spring damping-ratio=0.80 stiffness=523 epsilon=0.0001
-//     }
-//     window-open {
-//         duration-ms 150
-//         curve "ease-out-expo"
-//     }
-//     window-close {
-//         duration-ms 150
-//         curve "ease-out-quad"
-//     }
-//     horizontal-view-movement {
-//         spring damping-ratio=0.85 stiffness=423 epsilon=0.0001
-//     }
-//     window-movement {
-//         spring damping-ratio=0.75 stiffness=323 epsilon=0.0001
-//     }
-//     window-resize {
-//         spring damping-ratio=0.85 stiffness=423 epsilon=0.0001
-//     }
-//     config-notification-open-close {
-//         spring damping-ratio=0.65 stiffness=923 epsilon=0.001
-//     }
-//     screenshot-ui-open {
-//         duration-ms 200
-//         curve "ease-out-quad"
-//     }
-//     overview-open-close {
-//         spring damping-ratio=0.85 stiffness=800 epsilon=0.0001
-//     }
-// }
+
+// You can also set this to null to disable saving screenshots to disk.
+// screenshot-path null
+
+// Animation settings.
+// The wiki explains how to configure individual animations:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Animations
+animations {
+    // Uncomment to turn off all animations.
+    // off
+
+    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    // slowdown 3.0
+    // workspace-switch {
+    //     spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+    // }
+}
+
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
+// window-rule {
+    // This regular expression is intentionally made as specific as possible,
+    // since this is the default config, and we want no false positives.
+    // You can get away with just app-id="wezterm" if you want.
+//     match app-id=r#"^org\.wezfurlong\.wezterm$"#
+//     default-column-width {}
+// }
+// Block out mako notifications from screencasts.
+layer-rule {
+    match namespace="^notifications$"
+
+    block-out-from "screencast"
+
+    shadow {
+        on
+        softness 40
+        spread 5
+        offset x=0 y=5
+        draw-behind-window true
+    }
+
+    // geometry-corner-radius 12
+}
+
+// Make fuzzel semitransparent.
+layer-rule {
+    match namespace="^launcher$"
+
+    // opacity 0.95
+
+    shadow {
+        on
+    }
+
+    // for shadow - fuzzel has 10px radius by default
+    geometry-corner-radius 10
+}
+
+layer-rule {
+    match namespace="^quickshell$"
+    place-within-backdrop true
+}
+
+// window-rule {
+//   match is-active=false
+//
+//   No animation, so it kinda sucks
+//   opacity 0.7
+// }
 
 window-rule {
-  match app-id="^vicinae$"
-  focus-ring {
-    off
+    geometry-corner-radius 8
+    clip-to-geometry true
+}
+
+window-rule {
+  match is-urgent=true
+  border {
+    on
   }
+}
+
+window-rule {
+  match app-id="org.gnome.NautilusPreviewer"
+
+  open-floating true
+}
+
+window-rule {
+  match title="Picture-in-Picture"
+
+  open-floating true
 }
 
 window-rule {
@@ -245,57 +373,9 @@ window-rule {
 }
 
 window-rule {
-    // This regular expression is intentionally made as specific as possible,
-    // since this is the default config, and we want no false positives.
-    // You can get away with just app-id="wezterm" if you want.
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
-}
-window-rule {
-    match app-id=r#"^org\.gnome\."#
-    draw-border-with-background false
-    geometry-corner-radius 12
-    clip-to-geometry true
-}
-window-rule {
-    match app-id=r#"^gnome-control-center$"#
-    // match app-id=r#"^pavucontrol$"#
-    match app-id=r#"^nm-connection-editor$"#
-    default-column-width { proportion 0.5; }
-    open-floating false
-}
-window-rule {
-    match app-id=r#"^gnome-calculator$"#
-    match app-id=r#"^galculator$"#
-    match app-id=r#"^blueman-manager$"#
-    match app-id=r#"^org\.gnome\.Nautilus$"#
-    match app-id=r#"^steam$"#
-    match app-id=r#"^xdg-desktop-portal$"#
-    open-floating true
-}
-window-rule {
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    match app-id="Alacritty"
-    match app-id="zen"
-    match app-id="com.mitchellh.ghostty"
-    match app-id="kitty"
-    draw-border-with-background false
-}
-window-rule {
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-    match app-id="zoom"
-    open-floating true
-}
-// Open dms windows as floating by default
-window-rule {
-    match app-id=r#"org.quickshell$"#
-    open-floating true
-}
+  match app-id="code"
 
-window-rule {
-  match app-id="org.gnome.NautilusPreviewer"
-
-  open-floating true
+  default-column-width { proportion 0.75; }
 }
 
 window-rule {
@@ -307,6 +387,13 @@ window-rule {
 
 window-rule {
   match app-id="org.mozilla.Thunderbird"
+
+  open-maximized true
+  open-on-output "eDP-1"
+}
+
+window-rule {
+  match app-id="Microsoft-edge" title="Gmail"
 
   open-maximized true
   open-on-output "eDP-1"
@@ -333,10 +420,8 @@ window-rule {
   open-floating true
 }
 
-debug {
-    honor-xdg-activation-with-invalid-serial
-}
 
+// Indicate screencasted windows with red colors.
 window-rule {
     match is-window-cast-target=true
 
@@ -355,48 +440,17 @@ window-rule {
     }
 }
 
-// window titles cannot be matched here
-// layer-rule {
-//     match title="^clipse$"
-//
-//     block-out-from "screencast"
-// }
+// Example: block out two password managers from screen capture.
+// (This example rule is commented out with a "/-" in front.)
+/-window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
 
-layer-rule {
-    match namespace="^notifications$"
-    match namespace="^dms:notification-popup$"
+    block-out-from "screen-capture"
 
-    block-out-from "screencast"
-
-    shadow {
-        on
-        softness 40
-        spread 5
-        offset x=0 y=5
-        draw-behind-window true
-    }
-
-    // geometry-corner-radius 12
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
 }
-
-// DMS has a bug https://github.com/AvengeMedia/DankMaterialShell/issues/994
-// layer-rule {
-//     match namespace="^dms:osd$"
-//     match namespace="^dms:toast$"
-//
-//     block-out-from "screencast"
-// }
-
-// Override to disable super+tab
-// recent-windows {
-//     binds {
-//         Alt+Tab         { next-window scope="output"; }
-//         Alt+Shift+Tab   { previous-window scope="output"; }
-//         Alt+grave       { next-window filter="app-id"; }
-//         Alt+Shift+grave { previous-window filter="app-id"; }
-//     }
-// }
-//
 
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
@@ -414,7 +468,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+G repeat=false { switch-focus-between-floating-and-tiling; }
-    // Mod+N repeat=false { spawn "bash" "-c" "makoctl dismiss --all"; }
+    Mod+N repeat=false { spawn "bash" "-c" "makoctl dismiss --all"; }
 
     // Alt+Tab { spawn "sh" "-c" "~/.config/niri/scripts/window-switcher.sh"; }
 
@@ -426,19 +480,19 @@ binds {
     Mod+Return repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/open-terminal.sh"; }
     // Mod+slash repeat=false { spawn "bash" "-c" "pkill fuzzel || fuzzel"; }
     Mod+slash repeat=false { spawn "~/bin/vicinae/bin/vicinae" "toggle"; }
-    Super+Shift+Alt+L repeat=false { spawn-sh "dms ipc call lock lock"; }
+    Super+Shift+Alt+L repeat=false { spawn "swaylock"; }
 
     Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
 
     Super+B repeat=false {spawn "sh" "-c" "~/.config/niri/scripts/open-browser.sh";}
 
-    // Super+Alt+h cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "-25" "-y" "0"; }
-    // Super+Alt+l cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "+25" "-y" "0"; }
-    // Super+Alt+j cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "+25"; }
-    // Super+Alt+k cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "-25"; }
-    // Super+Alt+u repeat=false { spawn "ydotool" "click" "0xC0"; }
+    Super+Alt+h cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "-25" "-y" "0"; }
+    Super+Alt+l cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "+25" "-y" "0"; }
+    Super+Alt+j cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "+25"; }
+    Super+Alt+k cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "0" "-y" "-25"; }
+    Super+Alt+u repeat=false { spawn "ydotool" "click" "0xC0"; }
     // Super+Alt+u repeat=false { spawn "pavucontrol"; }
-    // Super+Alt+i repeat=false { spawn "ydotool" "click" "0xC1"; }
+    Super+Alt+i repeat=false { spawn "ydotool" "click" "0xC1"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -463,17 +517,10 @@ binds {
     // Mod+Down  { focus-window-down; }
     // Mod+Up    { focus-window-up; }
     // Mod+Right { focus-column-or-monitor-right; }
-
-    // window title notification
-    // Mod+H  { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-column-or-monitor-left"; }
-    // Mod+J     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-window-or-workspace-down"; }
-    // Mod+K     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-window-or-workspace-up"; }
-    // Mod+L { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-column-or-monitor-right"; }
-
-    Mod+H  { focus-column-or-monitor-left; }
-    Mod+J     { focus-window-or-workspace-down; }
-    Mod+K     { focus-window-or-workspace-up; }
-    Mod+L { focus-column-or-monitor-right; }
+    Mod+H  { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-column-or-monitor-left"; }
+    Mod+J     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-window-or-workspace-down"; }
+    Mod+K     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-window-or-workspace-up"; }
+    Mod+L { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-column-or-monitor-right"; }
 
     Mod+Ctrl+Left  { move-column-left-or-to-monitor-left; }
     Mod+Ctrl+Down  { move-window-down-or-to-workspace-down; }
@@ -490,24 +537,14 @@ binds {
     Mod+Ctrl+Home { move-column-to-first; }
     Mod+Ctrl+End  { move-column-to-last; }
 
-    // window title notification
-    // Mod+Shift+Left  { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-left;"; }
-    // Mod+Shift+Down     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-down;"; }
-    // Mod+Shift+Up     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-up;"; }
-    // Mod+Shift+Right { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-right;"; }
-    // Mod+Shift+H     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-left;"; }
-    // Mod+Shift+J     {  spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-down;";}
-    // Mod+Shift+K     {  spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-up;";}
-    // Mod+Shift+L     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-right;"; }
-
-    Mod+Shift+Left  { focus-monitor-left; }
-    Mod+Shift+Down     { focus-monitor-down; }
-    Mod+Shift+Up     { focus-monitor-up; }
-    Mod+Shift+Right { focus-monitor-right; }
-    Mod+Shift+H     { focus-monitor-left; }
-    Mod+Shift+J     {  focus-monitor-down; }
-    Mod+Shift+K     {  focus-monitor-up; }
-    Mod+Shift+L     { focus-monitor-right; }
+    Mod+Shift+Left  { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-left;"; }
+    Mod+Shift+Down     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-down;"; }
+    Mod+Shift+Up     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-up;"; }
+    Mod+Shift+Right { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-right;"; }
+    Mod+Shift+H     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-left;"; }
+    Mod+Shift+J     {  spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-down;";}
+    Mod+Shift+K     {  spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-up;";}
+    Mod+Shift+L     { spawn "sh" "-c" "~/.config/niri/scripts/move-focus.sh focus-monitor-right;"; }
 
     // Mod+Shift+Ctrl+Left  { move-window-to-monitor-left; }
     // Mod+Shift+Ctrl+Down  { move-window-to-monitor-down; }
@@ -659,23 +696,31 @@ binds {
     Alt+Print { screenshot-window; }
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
-    // Mod+Shift+E { quit; }
+    Mod+Shift+E { quit; }
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
-    // Mod+Shift+P { power-off-monitors; }
+    Mod+Shift+P { power-off-monitors; }
 
     Mod+Alt+W { set-dynamic-cast-window; }
     Mod+Alt+M { set-dynamic-cast-monitor; }
     Mod+Alt+R { clear-dynamic-cast-target; }
 }
 
+hotkey-overlay {
+    skip-at-startup
+}
+
 clipboard {
     disable-primary
 }
 
-// Include dms files
-include "dms/colors.kdl"
-include "dms/layout.kdl"
-include "dms/alttab.kdl"
-// include "dms/binds.kdl"
+overview {
+    backdrop-color "#343434"
+}
+
+
+// For going to browser when clicking links
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
