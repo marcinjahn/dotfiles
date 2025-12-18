@@ -24,7 +24,6 @@ merge-args = [
 merge-tool-edits-conflict-markers = true
 
 [git]
-push-new-bookmarks = true
 private-commits = '''description(glob:'private:*')'''
 colocate = true
 
@@ -36,3 +35,6 @@ concat(
   "This reverts commit " ++ commit_id ++ ".\n",
 )
 '''
+
+[remotes.origin]
+auto-track-bookmarks = "glob:*"
