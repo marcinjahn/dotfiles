@@ -1,0 +1,54 @@
+#!/bin/bash
+
+cleanup() {
+  sudo iptables -t nat -F
+
+  exit
+}
+
+enable() {
+  # KERNEL CONFIGURATION
+  sudo sysctl -w net.ipv4.ip_forward=1
+  sudo sysctl -w net.ipv6.conf.all.forwarding=1
+  sudo sysctl -w net.ipv4.conf.all.send_redirects=0
+
+  # IPTABLES
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 80 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 443 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5000 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5040 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5083 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5084 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 4000 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 7002 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 9000 -j REDIRECT --to-port 8080
+  # elasticsearch
+  # sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 9200 -j REDIRECT --to-port 8080
+  # redis
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 6379 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 6380 -j REDIRECT --to-port 8080
+  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 26379 -j REDIRECT --to-port 8080
+
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 80 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 443 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5000 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5040 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5083 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5084 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 4000 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 7002 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 9000 -j REDIRECT --to-port 8080
+  # elasticsearch
+  # sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 9200 -j REDIRECT --to-port 8080
+  # redis
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 6379 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 6380 -j REDIRECT --to-port 8080
+  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 26379 -j REDIRECT --to-port 8080
+
+  sudo -u mitmproxyuser -H bash -c '$HOME/bin/mitmweb --mode transparent --showhost --set block_global=false --ssl-insecure'
+}
+
+# Trap the SIGINT signal (CTRL+C) and (SIGTERM EXIT) and call the cleanup function
+trap cleanup SIGINT SIGTERM EXIT
+
+enable
