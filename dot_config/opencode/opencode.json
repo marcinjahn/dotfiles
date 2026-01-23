@@ -1,0 +1,33 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "github-copilot/claude-sonnet-4.5",
+  "small_model": "github-copilot/claude-haiku-4.5",
+  "formatter": {
+    "csharpier": {
+      "command": ["dotnet", "csharpier", "format", "$FILE"],
+      "extensions": [".cs", ".csproj", ".sln"]
+    }
+  },
+  "share": "disabled",
+  "permission": {
+    "lsp": "allow",
+    "external_directory": "ask",
+    "bash": {
+      "*": "ask",
+      "grep*": "allow",
+      "find*": "allow",
+      "sort*": "allow",
+      "cp*": "allow",
+      "acli jira workitem view *": "allow",
+      "jj diff*": "allow",
+      "npm run build": "allow",
+      "dotnet build*": "allow",
+      "dotnet restore*": "allow"
+    },
+    "read": "allow"
+  },
+  "plugin": [
+    "@tarquinen/opencode-dcp@latest",
+    "@mohak34/opencode-notifier@latest"
+  ]
+}
