@@ -126,6 +126,8 @@ overview {
 // spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store &"
 // spawn-sh-at-startup "~/bin/vicinae/bin/vicinae server --replace --open"
 
+spawn-sh-at-startup "dms ipc spotlight open";
+
 environment {
     ELECTRON_OZONE_PLATFORM_HINT "auto"
     XDG_CURRENT_DESKTOP "niri:GNOME"
