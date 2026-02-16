@@ -40,21 +40,14 @@ return {
         },
       },
     },
-    keys = {
-      {
-        "<leader>gp",
-        function()
-          Snacks.picker.gh_pr()
-        end,
-        desc = "GitHub Pull Requests (open)",
-      },
-      {
-        "<leader>gP",
-        function()
-          Snacks.picker.gh_pr({ state = "all" })
-        end,
-        desc = "GitHub Pull Requests (all)",
-      },
+  },
+  keys = {
+    {
+      "<leader>gj",
+      function()
+        Snacks.terminal("jjui")
+      end,
+      desc = "Launch jjui",
     },
   },
 }

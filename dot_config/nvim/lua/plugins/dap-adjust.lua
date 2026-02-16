@@ -97,7 +97,7 @@ return {
       dap.adapters.vsdbg = {
         id = "coreclr",
         type = "executable",
-        command = "/home/mnj/.vscode/extensions/ms-dotnettools.csharp-2.72.34-linux-x64/.debugger/vsdbg-ui",
+        command = "/home/mnj/.vscode/extensions/ms-dotnettools.csharp-2.110.4-linux-x64/.debugger/vsdbg-ui",
         args = {
           "--interpreter=vscode",
           -- "--engineLogging",
