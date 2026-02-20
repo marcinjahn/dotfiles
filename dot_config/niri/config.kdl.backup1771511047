@@ -315,6 +315,21 @@ window-rule {
 layer-rule {
     match namespace="^notifications$"
     match namespace="^dms:notification-popup$"
+
+    block-out-from "screencast"
+
+    shadow {
+        on
+        softness 40
+        spread 5
+        offset x=0 y=5
+        draw-behind-window true
+    }
+
+    // geometry-corner-radius 12
+}
+
+layer-rule {
     match namespace="^dms:osd$"
     match namespace="^dms:toast$"
 
@@ -345,5 +360,3 @@ include "dms/binds.kdl"
 
 include "dms/outputs.kdl"
 include "dms/cursor.kdl"
-
-include "dms/windowrules.kdl"

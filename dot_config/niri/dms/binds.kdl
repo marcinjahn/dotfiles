@@ -30,9 +30,11 @@ binds {
     Mod+slash repeat=false { spawn-sh "dms ipc spotlight toggle"; }
     Super+Shift+Alt+L repeat=false { spawn-sh "dms ipc call lock lock"; }
 
-    Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
+    // Super+S repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/sound.sh"; }
 
-    Super+B repeat=false {spawn "sh" "-c" "~/.config/niri/scripts/open-browser.sh";}
+    Super+S repeat=false { spawn-sh "pkill -USR2 -n handy"; }
+
+    Super+B repeat=false { spawn "sh" "-c" "~/.config/niri/scripts/open-browser.sh"; }
 
     // Super+Alt+h cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "-25" "-y" "0"; }
     // Super+Alt+l cooldown-ms=1 { spawn "ydotool" "mousemove" "-x" "+25" "-y" "0"; }
