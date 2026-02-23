@@ -16,15 +16,12 @@ rm -f "$CMD_FILE"
 
 if [ "$EXIT_CODE" -eq 0 ]; then
   rm -f "$OUTPUT_FILE"
-  notify-send "SUCCESS"
   echo "The command fully succeeded. The output has been cut to avoid bloat"
   exit 0
 fi
 
 OUTPUT=$(cat "$OUTPUT_FILE")
 rm -f "$OUTPUT_FILE"
-
-notify-send "RUNNING COPILOT"
 
 SUMMARY=$(copilot --silent --prompt "Build/test output:\n\n$OUTPUT\n\nOnly summarize the above output. Do not investigate, explain causes, or suggest fixes. Just extract and list: specific errors, failing test names, and file/line numbers mentioned in the output." \
   --model claude-haiku-4.5 2>/dev/null)

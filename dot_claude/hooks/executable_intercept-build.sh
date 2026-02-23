@@ -25,7 +25,7 @@ dotnet\ build* | dotnet\ test*)
 npm\ test* | npm\ run\ test* | npm\ build* | npm\ run\ build*)
   matches=1
   ;;
-pnpm\ test* | pnpm\ run\ test* | pnpm\ build* | pnpm\ run\ build*)
+pnpm\ test* | pnpm\ run\ test* | pnpm\ build* | pnpm\ run\ build* | pnpm\ run\ jan:build* | pnpm\ run\ hot:build* | pnpm\ run\ jan:test* | pnpm\ run\ hot:test* | pnpm\ nx\ build*)
   matches=1
   ;;
 yarn\ test* | yarn\ build* | yarn\ run\ test* | yarn\ run\ build*)
