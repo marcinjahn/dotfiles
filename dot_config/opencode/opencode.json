@@ -14,20 +14,32 @@
     "external_directory": "ask",
     "bash": {
       "*": "ask",
-      "grep*": "allow",
+      "wc *": "allow",
+      "grep *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "rg *": "allow",
       "find*": "allow",
       "sort*": "allow",
       "cp*": "allow",
+      "cat *": "allow",
       "acli jira workitem view *": "allow",
       "jj diff*": "allow",
-      "npm run build": "allow",
+      "npm run build*": "allow",
+      "npm run lint*": "allow",
+      "npm run test*": "allow",
+      "npm test": "allow",
       "dotnet build*": "allow",
-      "dotnet restore*": "allow"
+      "dotnet test*": "allow",
+      "dotnet restore*": "allow",
+      "ls *": "allow",
+      "just build*": "allow",
+      "just run*": "allow",
+      "just test*": "allow",
+      "cd *": "allow",
+      "mkdir *": "allow"
     },
     "read": "allow"
   },
-  "plugin": [
-    "@tarquinen/opencode-dcp@latest",
-    "@mohak34/opencode-notifier@latest"
-  ]
+  "plugin": ["@mohak34/opencode-notifier@latest"]
 }
