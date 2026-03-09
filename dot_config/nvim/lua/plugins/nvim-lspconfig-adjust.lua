@@ -29,12 +29,12 @@ return {
       virtual_text = false,
       virtual_lines = true,
     },
-    setup = {
-      -- without it, rust-analyzer will start twice for some reason
-      rust_analyzer = function()
-        return true
-      end,
-    },
+    -- setup = {
+    -- without it, rust-analyzer will start twice for some reason
+    -- rust_analyzer = function()
+    --   return true
+    -- end,
+    -- },
     servers = {
       denols = {
         enabled = false,
@@ -82,9 +82,12 @@ return {
       angularls = {
         root_dir = util.root_pattern("angular.json", "nx.json"),
       },
-      -- vtsls = {
-      --   root_dir = util.root_pattern(".git"),
-      -- },
+      vtsls = {
+        on_attach = function(client)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+        end,
+      },
       cssmodules_ls = {
         root_dir = util.root_pattern("nx.json", "package.json"),
       },

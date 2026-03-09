@@ -9,3 +9,5 @@
 
 -- Delete single character without yanking
 vim.keymap.set("n", "x", '"_x', { desc = "Delete char without yanking" })
+
+vim.keymap.set("n", "<leader>bc", "<cmd>CopyAbsolutePath<cr>", { desc = "Copy absolute path" })
