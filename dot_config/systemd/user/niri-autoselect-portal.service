@@ -1,0 +1,8 @@
+[Unit]
+Description=niri-autoselect portal backend
+PartOf=graphical-session.target
+
+[Service]
+Type=dbus
+BusName=org.freedesktop.impl.portal.desktop.niri-autoselect
+ExecStart=/usr/local/bin/niri-autoselect-portal
