@@ -3,14 +3,23 @@
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 
+if [ "${CLAUDE_BYPASS_BUILD_SUMMARY:-0}" = "1" ]; then
+  exit 0
+fi
+
 if [ -z "$COMMAND" ]; then
   exit 0
 fi
 
+# Skip if RTK already rewrote this command
+case "$COMMAND" in rtk\ *) exit 0 ;; esac
+
 # Strip leading whitespace, then any leading "cd <dir> &&" chains
 TRIMMED=$(echo "$COMMAND" | sed 's/^[[:space:]]*//')
-while echo "$TRIMMED" | grep -qE '^cd[[:space:]]+[^&]*&&'; do
-  TRIMMED=$(echo "$TRIMMED" | sed -E 's/^cd[[:space:]]+[^&]+&&[[:space:]]*//')
+while echo "$TRIMMED" | grep -qE '^cd[[:space:]]+[^&]+&&'; do
+  NEW=$(echo "$TRIMMED" | sed -E 's/^cd[[:space:]]+[^&]+&&[[:space:]]*//')
+  [ "$NEW" = "$TRIMMED" ] && break
+  TRIMMED="$NEW"
 done
 
 matches=0
