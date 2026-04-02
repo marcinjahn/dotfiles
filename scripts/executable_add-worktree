@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+WORKTREE_NAME="$1"
+PROJECT_NAME="$(basename "$PWD")"
+mkdir -p ~/code/worktrees
+jj workspace add ~/code/worktrees/"$WORKTREE_NAME"
+cd ~/code/worktrees/"$WORKTREE_NAME"
+puff clone "$PROJECT_NAME"
