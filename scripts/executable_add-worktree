@@ -4,6 +4,7 @@ set -euo pipefail
 WORKTREE_NAME="$1"
 PROJECT_NAME="$(basename "$PWD")"
 mkdir -p ~/code/worktrees
-jj workspace add ~/code/worktrees/"$WORKTREE_NAME"
+jj workspace add ~/code/worktrees/"$WORKTREE_NAME" >&2
 cd ~/code/worktrees/"$WORKTREE_NAME"
-puff clone "$PROJECT_NAME"
+puff link "$PROJECT_NAME" >&2
+echo "$PWD"
