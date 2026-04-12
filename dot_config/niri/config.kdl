@@ -23,7 +23,7 @@ input {
     }
     touchpad {
         tap
-        dwt
+        // dwt
         // dwtp
         natural-scroll
     }
@@ -347,3 +347,4 @@ include "dms/outputs.kdl"
 include "dms/cursor.kdl"
 
 include "dms/windowrules.kdl"
+
