@@ -2,7 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "DISABLE_ERROR_REPORTING": "1",
-    "DISABLE_TELEMETRY": "1"
+    "DISABLE_TELEMETRY": "1",
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
   },
   "includeCoAuthoredBy": false,
   "model": "opus[1m]",
@@ -36,7 +37,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'INPUT=$(cat); CWD=$(echo \"$INPUT\" | jq -r .cwd); NAME=$(echo \"$INPUT\" | jq -r .name); DIR=\"$CWD/.claude-worktrees/$NAME\"; mkdir -p \"$(dirname \"$DIR\")\" && jj workspace add \"$DIR\" >&2 && PROJECT=$(basename \"$CWD\") && (cd \"$DIR\" && puff link \"$PROJECT\" >&2 || true) && echo \"$DIR\"'"
+            "command": "~/.claude/hooks/worktree-create.sh",
+            "timeout": 30
           }
         ]
       }
@@ -46,7 +48,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'INPUT=$(cat); CWD=$(echo \"$INPUT\" | jq -r .cwd); WPATH=$(echo \"$INPUT\" | jq -r .worktree_path); [ -z \"$WPATH\" ] || [ ! -d \"$WPATH\" ] && exit 0; WSNAME=$(basename \"$WPATH\"); (cd \"$CWD\" && jj workspace forget \"$WSNAME\") && rm -rf \"$WPATH\"'"
+            "command": "~/.claude/hooks/worktree-remove.sh",
+            "timeout": 30
           }
         ]
       }
@@ -71,7 +74,7 @@
     "typescript-lsp@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true
   },
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754033694564
