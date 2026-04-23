@@ -1,12 +1,17 @@
 ---
 name: create-pr
-description: Create a GitHub PR. Only invoke when the user explicitly asks to create a PR.
+description: Create a GitHub PR. Only invoke when the user explicitly asks to create a Pull Request.
 user_invocable: true
 ---
 
-Use the `create-pr` command (available in PATH) to create a GitHub PR. **Only run this when the user explicitly asks you to create a PR.** If you do not know the Jira task number, ask user.
+Use the `create-pr` command (available in PATH) to create a GitHub PR. **Only run this when the user explicitly asks you to create Pull Request/PR** If you do not know the Jira task number, ask user.
+Also transition Jira task to "Code Review" status unless user explicitly says not to.
 
-## Usage
+## Flow
+
+### 1. create-pr script
+
+#### Usage
 
 ```
 create-pr --task PSE-123 --ai <1|2|3|4|5> [--draft]
@@ -15,7 +20,7 @@ create-pr --title "Some title" --ai <1|2|3|4|5> [--description "Details"] [--dra
 
 Either `--task` or `--title` is required. `--ai` is always required.
 
-## Arguments
+#### Arguments
 
 - `--task TASK` — Jira task key (e.g. PSE-123). The script fetches the task from Jira, gets the code diff, and uses copilot to generate PR title, description, and branch name automatically.
 - `--title "Title"` — Manual PR title (use when there's no Jira task).
@@ -29,7 +34,7 @@ Either `--task` or `--title` is required. `--ai` is always required.
   - 4 = `ai-4-native` (prefer this option when in doubt)
   - 5 = `ai-5-full-ai`
 
-## How to invoke
+#### How to invoke
 
 Prefer the `--title` and `--description` options instead of `--task`. Use the `--task` option only
 if you have no idea what the work was about. However, if you did work on the task, prepare title and
@@ -44,3 +49,13 @@ The title should be succinct, and start from Jira task numebr. The description s
    ```
 
 2. Report the resulting PR URL back to the user.
+
+### 2. Transition Jira Task
+
+After creating the PR, transition the Jira task to proper status. Here's the command to do that:
+
+```sh
+acli jira workitem transition --help --key "{JIRA TASK NUMBER}" --status "Code Review"
+```
+
+Replace `{JIRA TASK NUMBER}` with the actual task number.
