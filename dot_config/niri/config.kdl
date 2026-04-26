@@ -113,6 +113,21 @@ layer-rule {
     match namespace="^quickshell$"
     place-within-backdrop true
 }
+
+layer-rule {
+    match layer="top"
+    match layer="overlay"
+
+    background-effect {
+        xray false
+    }
+}
+
+layer-rule {
+  match namespace="^dms:notification-popup$"
+
+}
+
 overview {
     workspace-shadow {
         off
@@ -175,135 +190,11 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
 
-window-rule {
-  match app-id="^vicinae$"
-  focus-ring {
-    off
-  }
-}
-
-window-rule {
-    match app-id="firefox"
-    match app-id="zen"
-    match app-id="chrome"
-    match app-id="chromium"
-    match app-id="edge"
-
-    exclude title="Developer Tools"
-
-    open-maximized true
-}
-
-window-rule {
-    // This regular expression is intentionally made as specific as possible,
-    // since this is the default config, and we want no false positives.
-    // You can get away with just app-id="wezterm" if you want.
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
-}
-window-rule {
-    match app-id=r#"^org\.gnome\."#
-    draw-border-with-background false
-    geometry-corner-radius 12
-    clip-to-geometry true
-}
-window-rule {
-    match app-id=r#"^gnome-control-center$"#
-    // match app-id=r#"^pavucontrol$"#
-    match app-id=r#"^nm-connection-editor$"#
-    default-column-width { proportion 0.5; }
-    open-floating false
-}
-window-rule {
-    match app-id=r#"^gnome-calculator$"#
-    match app-id=r#"^galculator$"#
-    match app-id=r#"^blueman-manager$"#
-    match app-id=r#"^org\.gnome\.Nautilus$"#
-    match app-id=r#"^steam$"#
-    match app-id=r#"^xdg-desktop-portal$"#
-    open-floating true
-}
-window-rule {
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    match app-id="Alacritty"
-    match app-id="zen"
-    match app-id="com.mitchellh.ghostty"
-    match app-id="kitty"
-    draw-border-with-background false
-}
-window-rule {
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-    match app-id="zoom"
-    open-floating true
-}
-// Open dms windows as floating by default
-window-rule {
-    match app-id=r#"org.quickshell$"#
-    open-floating true
-}
-
-window-rule {
-  match app-id="org.gnome.NautilusPreviewer"
-
-  open-floating true
-}
-
-window-rule {
-  match app-id="Slack"
-
-  open-maximized true
-  open-on-output "eDP-1"
-}
-
-window-rule {
-  match app-id="org.mozilla.Thunderbird"
-
-  open-maximized true
-  open-on-output "eDP-1"
-}
-
-window-rule {
-  match app-id="pavucontrol"
-  match app-id="com.saivert.pwvucontrol"
-  default-column-width { proportion 0.22; }
-}
-
-window-rule {
-  match title="clipse"
-  open-floating true
-}
-
-window-rule {
-  match app-id="jetbrains-rider"
-  open-maximized true
-}
-
-window-rule {
-  match title="Yubico Authenticator"
-  open-floating true
-}
 
 debug {
     honor-xdg-activation-with-invalid-serial
 }
 
-window-rule {
-    match is-window-cast-target=true
-
-    border {
-        on
-        inactive-color "#FCCA46"
-    }
-
-    shadow {
-        color "#7d0d2d70"
-    }
-
-    tab-indicator {
-        active-color "#FCCA46"
-        inactive-color "#FCCA46"
-    }
-}
 
 // window titles cannot be matched here
 // layer-rule {

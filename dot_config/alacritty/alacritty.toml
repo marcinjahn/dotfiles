@@ -6,7 +6,8 @@ import = [
 [window]
 decorations = "None"
 padding = { x = 5, y = 0 }
-opacity = 1.0
+dynamic_padding = true
+opacity = 0.9
 
 [scrolling]
 history = 3023
@@ -25,6 +26,13 @@ save_to_clipboard = false
 [bell]
 duration = 0
 
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font", style = "Bold Italic" }
+size = 14.0
+
 # [keyboard]
 # bindings = [
 #   { key = "C",       mods = "Control|Shift", action = "Copy"  },
@@ -35,3 +43,8 @@ duration = 0
 #   { key = "Key0",    mods = "Control",       action = "ResetFontSize"    },
 #   { key = "Enter",   mods = "Shift",         chars = "\n" },
 # ]
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\x1b\r"
