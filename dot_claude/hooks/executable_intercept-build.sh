@@ -22,6 +22,9 @@ while echo "$TRIMMED" | grep -qE '^cd[[:space:]]+[^&]+&&'; do
   TRIMMED="$NEW"
 done
 
+# Strip a leading "limited " prefix (CPU/memory limiter wrapper)
+TRIMMED=$(echo "$TRIMMED" | sed -E 's/^limited[[:space:]]+//')
+
 matches=0
 
 case "$TRIMMED" in

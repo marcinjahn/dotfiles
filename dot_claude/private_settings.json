@@ -72,9 +72,11 @@
   "enabledPlugins": {
     "csharp-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
   },
   "effortLevel": "high",
+  "editorMode": "vim",
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754033694564
