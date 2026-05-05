@@ -1,49 +1,104 @@
 #!/bin/bash
 
-cleanup() {
-  sudo iptables -t nat -F
+# Ports redirected through mitmproxy. Comment a line to disable a port.
+PORTS=(
+  80
+  443
+  5000
+  5040
+  5083
+  5084
+  4000
+  7002
+  9000
+  # 9200  # elasticsearch
+  6379  # redis
+  6380  # redis
+  26379 # redis
+)
 
+CHAIN=MITMPROXY_OUT
+MITMPROXY_PORT=8080
+
+cleanup() {
+  for ipt in iptables ip6tables; do
+    sudo "$ipt" -t nat -D OUTPUT -j "$CHAIN" 2>/dev/null
+    sudo "$ipt" -t nat -F "$CHAIN" 2>/dev/null
+    sudo "$ipt" -t nat -X "$CHAIN" 2>/dev/null
+  done
   exit
 }
 
+install_cert() {
+  local cert_src=/home/mitmproxyuser/.mitmproxy/mitmproxy-ca-cert.pem
+  local cert=/tmp/mitmproxy-ca-cert.pem
+
+  if ! sudo test -f "$cert_src"; then
+    echo "Generating mitmproxy CA cert..."
+    sudo -u mitmproxyuser -H bash -c '
+      "$HOME/bin/mitmdump" --listen-port 18080 >/dev/null 2>&1 &
+      pid=$!
+      for _ in $(seq 1 50); do
+        [ -f "$HOME/.mitmproxy/mitmproxy-ca-cert.pem" ] && break
+        sleep 0.1
+      done
+      kill "$pid" 2>/dev/null
+      wait "$pid" 2>/dev/null
+    '
+  fi
+
+  sudo cp "$cert_src" "$cert"
+  sudo chmod a+r "$cert"
+
+  local sys_cert=/etc/pki/ca-trust/source/anchors/mitmproxy-ca-cert.pem
+  if ! sudo test -f "$sys_cert" || ! sudo cmp -s "$cert" "$sys_cert"; then
+    sudo cp "$cert" "$sys_cert"
+    sudo update-ca-trust
+  fi
+
+  if ! command -v certutil >/dev/null; then
+    echo "WARNING: nss-tools not installed - browsers won't trust mitmproxy."
+    echo "Run: sudo dnf install nss-tools, then rerun this script."
+    return
+  fi
+
+  local nss_dirs=(
+    "$HOME/.pki/nssdb"
+    "$HOME"/.mozilla/firefox/*.default*
+    "$HOME"/.var/app/app.zen_browser.zen/.zen/*
+    "$HOME"/.var/app/io.github.zen_browser.zen/.zen/*
+  )
+
+  # Close browsers before first run; NSS DB may be locked while they're running
+  for dir in "${nss_dirs[@]}"; do
+    [ -f "$dir/cert9.db" ] || continue
+    certutil -L -d "sql:$dir" -n mitmproxy >/dev/null 2>&1 ||
+      certutil -A -d "sql:$dir" -t "C,," -n mitmproxy -i "$cert"
+  done
+}
+
+setup_iptables() {
+  for ipt in iptables ip6tables; do
+    sudo "$ipt" -t nat -N "$CHAIN" 2>/dev/null
+    sudo "$ipt" -t nat -F "$CHAIN"
+    sudo "$ipt" -t nat -C OUTPUT -j "$CHAIN" 2>/dev/null ||
+      sudo "$ipt" -t nat -A OUTPUT -j "$CHAIN"
+    for port in "${PORTS[@]}"; do
+      sudo "$ipt" -t nat -A "$CHAIN" -p tcp -m owner ! --uid-owner mitmproxyuser \
+        --dport "$port" -j REDIRECT --to-port "$MITMPROXY_PORT"
+    done
+  done
+}
+
 enable() {
+  install_cert
+
   # KERNEL CONFIGURATION
   sudo sysctl -w net.ipv4.ip_forward=1
   sudo sysctl -w net.ipv6.conf.all.forwarding=1
   sudo sysctl -w net.ipv4.conf.all.send_redirects=0
 
-  # IPTABLES
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 80 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 443 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5000 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5040 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5083 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5084 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 4000 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 7002 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 9000 -j REDIRECT --to-port 8080
-  # elasticsearch
-  # sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 9200 -j REDIRECT --to-port 8080
-  # redis
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 6379 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 6380 -j REDIRECT --to-port 8080
-  sudo iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 26379 -j REDIRECT --to-port 8080
-
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 80 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 443 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5000 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5040 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5083 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 5084 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 4000 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 7002 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 9000 -j REDIRECT --to-port 8080
-  # elasticsearch
-  # sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 9200 -j REDIRECT --to-port 8080
-  # redis
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 6379 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 6380 -j REDIRECT --to-port 8080
-  sudo ip6tables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner mitmproxyuser --dport 26379 -j REDIRECT --to-port 8080
+  setup_iptables
 
   sudo -u mitmproxyuser -H bash -c '$HOME/bin/mitmweb --mode transparent --showhost --set block_global=false --ssl-insecure'
 }
