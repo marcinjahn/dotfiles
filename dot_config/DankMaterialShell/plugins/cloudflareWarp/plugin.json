@@ -1,0 +1,12 @@
+{
+  "id": "cloudflareWarp",
+  "name": "Cloudflare WARP",
+  "description": "Toggle Cloudflare WARP from the bar; starts/stops warp-svc on demand",
+  "version": "1.0.0",
+  "author": "mnj",
+  "icon": "cloud",
+  "type": "widget",
+  "component": "./CloudflareWarpWidget.qml",
+  "settings": "./CloudflareWarpSettings.qml",
+  "permissions": ["settings_read", "settings_write", "process"]
+}

@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+IFACE="${1:-CloudflareWARP}"
+CONF="$HOME/.config/warp-split-dns/domains.conf"
+[ -r "$CONF" ] || exit 0
+DOMAINS=$(grep -Ev '^\s*(#|$)' "$CONF" | sed 's/^/~/' | tr '\n' ' ')
+[ -n "$DOMAINS" ] || exit 0
+ip link show "$IFACE" >/dev/null 2>&1 || exit 0
+sudo -n /usr/bin/resolvectl dns "$IFACE" 127.0.2.2
+sudo -n /usr/bin/resolvectl domain "$IFACE" $DOMAINS

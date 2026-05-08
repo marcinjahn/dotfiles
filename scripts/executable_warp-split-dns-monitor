@@ -1,0 +1,13 @@
+#!/bin/sh
+APPLY="$HOME/scripts/warp-split-dns-apply"
+"$APPLY" || true
+ip -o monitor link | while read -r line; do
+  case "$line" in
+  *CloudflareWARP*)
+    case "$line" in
+    *DELETED*) : ;;
+    *) "$APPLY" || true ;;
+    esac
+    ;;
+  esac
+done

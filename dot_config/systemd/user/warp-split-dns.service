@@ -1,0 +1,12 @@
+[Unit]
+Description=Apply WARP split DNS routing when CloudflareWARP comes up
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=%h/scripts/warp-split-dns-monitor
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
