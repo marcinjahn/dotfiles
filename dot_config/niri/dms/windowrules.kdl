@@ -141,10 +141,10 @@ window-rule {
         // Note: it'll look better to set background opacity
         // through your GTK theme CSS and not here.
         // This is just an example that makes it look obvious.
-        opacity 0.8
+        // opacity 0.8
 
-        background-effect {
-            blur true
-        }
+        // background-effect {
+        //     blur true
+        // }
     }
 }
