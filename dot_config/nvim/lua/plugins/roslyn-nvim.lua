@@ -68,9 +68,9 @@ vim.lsp.config("roslyn", {
       dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
       dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
     },
-    ["csharp|code_lens"] = {
-      dotnet_enable_references_code_lens = true,
-    },
+    -- ["csharp|code_lens"] = {
+    --   dotnet_enable_references_code_lens = true,
+    -- },
     ["csharp|completion"] = {
       dotnet_show_completion_items_from_unimported_namespaces = true,
       dotnet_show_name_completion_suggestions = true,
@@ -82,7 +82,7 @@ return {
   {
     "seblyng/roslyn.nvim",
     vscode = false,
-    -- ft = "cs",
+    ft = { "cs", "razor", "cshtml", "sln", "slnx", "csproj" },
     ---@module 'roslyn.config'
     ---@type RoslynNvimConfig
     opts = {},

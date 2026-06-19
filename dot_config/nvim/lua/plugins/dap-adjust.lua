@@ -60,7 +60,6 @@ return {
     enabled = true,
     config = function()
       local dap = require("dap")
-      local dotnet = require("easy-dotnet")
       -- local dapui = require("dapui")
       dap.set_log_level("TRACE")
 
@@ -90,7 +89,7 @@ return {
         if debug_dll ~= nil then
           return debug_dll
         end
-        local dll = dotnet.get_debug_dll()
+        local dll = require("easy-dotnet").get_debug_dll()
         debug_dll = dll
         return dll
       end
@@ -130,7 +129,7 @@ return {
           args = {},
           env = function()
             local dll = ensure_dll()
-            local vars = dotnet.get_environment_variables(dll.project_name, dll.absolute_project_path)
+            local vars = require("easy-dotnet").get_environment_variables(dll.project_name, dll.absolute_project_path)
             return vars or nil
           end,
           cwd = function()

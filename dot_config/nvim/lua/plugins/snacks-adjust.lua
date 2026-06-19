@@ -8,6 +8,16 @@ return {
           filename_first = true,
         },
       },
+      -- Default previewer for every source that shows files (files, grep, lsp
+      -- references/definitions, ...). Sources with their own previewer (git,
+      -- man, colorscheme, ...) override this and are unaffected.
+      preview = function(ctx)
+        local res = Snacks.picker.preview.file(ctx)
+        if ctx.item.file then
+          ctx.picker.preview:set_title(ctx.item.file)
+        end
+        return res
+      end,
     },
     dashboard = {
       preset = {

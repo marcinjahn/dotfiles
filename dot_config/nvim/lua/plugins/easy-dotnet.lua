@@ -9,6 +9,10 @@ return {
     },
     opts = {
       picker = "snacks",
+      background_scanning = false,
+      test_runner = {
+        auto_start_testrunner = false,
+      },
       auto_bootstrap_namespace = {
         type = "file_scoped",
         use_clipboard_json = {
