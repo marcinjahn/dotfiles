@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "autoswitch": {
+    "threshold": 95.0
+  }
+}
